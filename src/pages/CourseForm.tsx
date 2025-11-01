@@ -19,6 +19,7 @@ type Props = {
   onSubmit: (payload: any, token?: string) => Promise<any>;
   onChange?: (payload: any) => void;
   submitLabel?: string;
+  hideSubmit?: boolean;
 };
 
 function makeLesson(): Lesson {
@@ -39,6 +40,7 @@ export default function CourseForm({
   onSubmit,
   submitLabel = "Save",
   onChange,
+  hideSubmit = false,
 }: Props) {
   const [title, setTitle] = useState(initial.title ?? "");
   const [category, setCategory] = useState(initial.category ?? "");
@@ -51,15 +53,15 @@ export default function CourseForm({
   const [description, setDescription] = useState(initial.description ?? "");
   const [isPublished, setIsPublished] = useState(!!initial.isPublished);
 
-  const [tutorialTitle, setTutorialTitle] = useState(
-    initial.tutorial?.title ?? ""
-  );
-  const [tutorialContent, setTutorialContent] = useState(
-    initial.tutorial?.content ?? ""
-  );
-  const [tutorialVideo, setTutorialVideo] = useState(
-    initial.tutorial?.videoUrl ?? ""
-  );
+  // const [tutorialTitle, setTutorialTitle] = useState(
+  //   initial.tutorial?.title ?? ""
+  // );
+  // const [tutorialContent, setTutorialContent] = useState(
+  //   initial.tutorial?.content ?? ""
+  // );
+  // const [tutorialVideo, setTutorialVideo] = useState(
+  //   initial.tutorial?.videoUrl ?? ""
+  // );
 
   const [lessons, setLessons] = useState<Lesson[]>(
     initial.lessons ?? [makeLesson()]
@@ -85,8 +87,8 @@ export default function CourseForm({
     if (!title.trim()) return "Title is required";
     if (!category.trim()) return "Category is required";
     if (!level) return "Level is required";
-    if (!tutorialTitle.trim()) return "Tutorial title is required";
-    if (!tutorialContent.trim()) return "Tutorial content is required";
+    // if (!tutorialTitle.trim()) return "Tutorial title is required";
+    // if (!tutorialContent.trim()) return "Tutorial content is required";
     for (const l of lessons) {
       if (!l.title.trim()) return "All lessons must have a title";
     }
@@ -113,11 +115,11 @@ export default function CourseForm({
       thumbnail,
       description,
       isPublished,
-      tutorial: {
-        title: tutorialTitle,
-        content: tutorialContent,
-        videoUrl: tutorialVideo,
-      },
+      // tutorial: {
+      //   title: tutorialTitle,
+      //   content: tutorialContent,
+      //   videoUrl: tutorialVideo,
+      // },
       lessons: lessons.map((l) => ({
         title: l.title,
         order: l.order,
@@ -151,11 +153,11 @@ export default function CourseForm({
     thumbnail,
     description,
     isPublished,
-    tutorial: {
-      title: tutorialTitle,
-      content: tutorialContent,
-      videoUrl: tutorialVideo,
-    },
+    // tutorial: {
+    //   title: tutorialTitle,
+    //   content: tutorialContent,
+    //   videoUrl: tutorialVideo,
+    // },
     lessons: lessons.map((l) => ({
       title: l.title,
       duration: l.duration,
@@ -182,9 +184,9 @@ export default function CourseForm({
     thumbnail,
     description,
     isPublished,
-    tutorialTitle,
-    tutorialContent,
-    tutorialVideo,
+    // tutorialTitle,
+    // tutorialContent,
+    // tutorialVideo,
     lessons,
   ]);
 
@@ -270,12 +272,57 @@ export default function CourseForm({
         </div>
 
         <div>
-          <label className="form-label">Thumbnail URL</label>
-          <input
-            value={thumbnail}
-            onChange={(e) => setThumbnail(e.target.value)}
-            className="input-field"
-          />
+          <label className="form-label">Thumbnail</label>
+
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <div>
+              <input
+                id="course-thumb-file"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (!f) return;
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    setThumbnail(String(reader.result ?? ""));
+                  };
+                  reader.readAsDataURL(f);
+                  e.currentTarget.value = "";
+                }}
+              />
+
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() =>
+                  document.getElementById("course-thumb-file")?.click()
+                }
+              >
+                Upload image
+              </button>
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <input
+                value={thumbnail}
+                onChange={(e) => setThumbnail(e.target.value)}
+                className="input-field"
+                placeholder="Or paste image URL"
+              />
+
+              {thumbnail ? (
+                <div style={{ marginTop: 8 }}>
+                  <img
+                    src={thumbnail}
+                    alt="thumbnail preview"
+                    style={{ maxWidth: 180, maxHeight: 120, borderRadius: 8 }}
+                  />
+                </div>
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -288,7 +335,7 @@ export default function CourseForm({
         />
       </div>
 
-      <div className="form-section">
+      {/* <div className="form-section">
         <h4 className="font-semibold mb-2">Tutorial</h4>
         <input
           value={tutorialTitle}
@@ -317,7 +364,7 @@ export default function CourseForm({
             />
           </div>
         ) : null}
-      </div>
+      </div> */}
 
       <div>
         <div className="flex items-center justify-between mb-2">
@@ -355,11 +402,13 @@ export default function CourseForm({
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button type="submit" disabled={loading} className="btn">
-          {loading ? "Creating..." : submitLabel}
-        </button>
-      </div>
+      {!hideSubmit && (
+        <div className="flex items-center gap-3">
+          <button type="submit" disabled={loading} className="btn">
+            {loading ? "Creating..." : submitLabel}
+          </button>
+        </div>
+      )}
     </form>
   );
 }

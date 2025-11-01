@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800;900&family=Merriweather:wght@700;900&display=swap");
+@import "tailwindcss";
 
 :root {
   --color-light: #f4f2f3;
@@ -145,8 +146,6 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -479,10 +478,13 @@ button:focus-visible {
 /* Make the left form column scroll independently so preview stays visible */
 .create-form {
   max-height: calc(100vh - 120px);
-  overflow: auto;
+  overflow: scroll;
   padding-right: 6px;
 }
 
+.create-form::-webkit-scrollbar {
+  display: none;
+}
 .cards-list {
   display: flex;
   flex-direction: column;

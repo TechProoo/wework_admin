@@ -2,12 +2,20 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { fetchCourses, deleteCourse } from "../api/courses";
 import type { Course } from "../api/courses";
 import { Link, useNavigate } from "react-router-dom";
+import { useNewCourse } from "../contexts/NewCourseContext";
 
 export default function CoursesList() {
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const newCourse = (() => {
+    try {
+      return useNewCourse();
+    } catch {
+      return null as any;
+    }
+  })();
 
   // UI state
   const [search, setSearch] = useState("");
@@ -145,7 +153,7 @@ export default function CoursesList() {
             <option value="title">Title</option>
           </select>
 
-          <button onClick={() => navigate("/courses/new")} className="btn">
+          <button onClick={() => newCourse?.open()} className="btn">
             New Course
           </button>
         </div>

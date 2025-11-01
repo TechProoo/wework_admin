@@ -24,116 +24,135 @@ type Lesson = {
   quiz?: Quiz | null;
 };
 
-type Props = {
+interface LessonFormProps {
   lesson: Lesson;
-  onChange: (l: Lesson) => void;
+  onChange: (lesson: Lesson) => void;
   onRemove?: () => void;
-};
+}
 
-export default function LessonForm({ lesson, onChange, onRemove }: Props) {
+export default function LessonForm({
+  lesson,
+  onChange,
+  onRemove,
+}: LessonFormProps) {
   const [local, setLocal] = useState<Lesson>(lesson);
 
-  const setField = <K extends keyof Lesson>(key: K, value: Lesson[K]) => {
-    const next = { ...local, [key]: value } as Lesson;
-    setLocal(next);
-    onChange(next);
+  const updateField = <K extends keyof Lesson>(key: K, value: Lesson[K]) => {
+    const updated = { ...local, [key]: value };
+    setLocal(updated);
+    onChange(updated);
+  };
+
+  const addEmptyQuiz = () => {
+    updateField("quiz", {
+      title: "",
+      questions: [
+        {
+          id: String(Date.now()),
+          text: "",
+          options: ["", "", "", ""],
+          answer: "",
+        },
+      ],
+    });
   };
 
   return (
-    <div className="card mb-4">
-      <div className="flex items-center justify-between mb-2">
-        <div className="font-medium">Lesson: {local.title || "New"}</div>
+    <div className="card mb-4 p-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-medium text-lg">
+          Lesson: {local.title || "Untitled Lesson"}
+        </h3>
         {onRemove && (
-          <button type="button" className="btn-ghost" onClick={onRemove}>
+          <button
+            type="button"
+            className="btn-ghost text-sm"
+            onClick={onRemove}
+          >
             Remove Lesson
           </button>
         )}
       </div>
 
-      <div className="grid" style={{ gap: 8 }}>
+      {/* Lesson Details */}
+      <div className="grid gap-3">
         <input
           value={local.title}
-          onChange={(e) => setField("title", e.target.value)}
-          className="search-input mb-2"
+          onChange={(e) => updateField("title", e.target.value)}
+          className="search-input"
           placeholder="Lesson title"
         />
-        <div className="flex gap-3">
+
+        <div className="flex gap-3 flex-wrap">
           <input
             type="number"
             value={local.order}
-            onChange={(e) => setField("order", Number(e.target.value))}
-            className="search-input"
+            onChange={(e) => updateField("order", Number(e.target.value))}
+            className="search-input flex-1"
             placeholder="Order"
+            min={1}
           />
           <input
             type="number"
             value={local.duration}
-            onChange={(e) => setField("duration", Number(e.target.value))}
-            className="search-input"
+            onChange={(e) => updateField("duration", Number(e.target.value))}
+            className="search-input flex-1"
             placeholder="Duration (minutes)"
+            min={1}
           />
-          <label className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
               checked={local.isPreview}
-              onChange={(e) => setField("isPreview", e.target.checked)}
-            />{" "}
+              onChange={(e) => updateField("isPreview", e.target.checked)}
+            />
             Preview
           </label>
         </div>
 
         <textarea
           value={local.content}
-          onChange={(e) => setField("content", e.target.value)}
-          className="w-full border rounded px-3 py-2 h-24"
-          placeholder="Lesson content"
+          onChange={(e) => updateField("content", e.target.value)}
+          style={{ height: "100px", borderRadius: "10px" }}
+          className="w-full border rounded px-3 py-2 resize-none"
+          placeholder="Lesson content..."
         />
+
         <input
           value={local.videoUrl}
-          onChange={(e) => setField("videoUrl", e.target.value)}
+          onChange={(e) => updateField("videoUrl", e.target.value)}
           className="search-input"
           placeholder="Video URL"
         />
-        {local.videoUrl ? (
+
+        {/* Video preview */}
+        {local.videoUrl && (
           <div className="mt-2">
             <video
               src={local.videoUrl}
               controls
               style={{ width: "100%", maxHeight: 240 }}
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Preview of the lesson video
+            </p>
           </div>
-        ) : null}
+        )}
 
-        <div>
-          <label className="font-medium">Quiz (optional)</label>
+        {/* Quiz Section */}
+        <div className="mt-3">
+          <label className="font-medium block mb-2">Quiz (optional)</label>
           {local.quiz ? (
             <QuizForm
               quiz={local.quiz}
-              onChange={(q) => setField("quiz", q)}
-              onRemove={() => setField("quiz", null)}
+              onChange={(quiz) => updateField("quiz", quiz)}
+              onRemove={() => updateField("quiz", null)}
             />
           ) : (
-            <div className="mt-2">
-              <button
-                className="btn-ghost"
-                type="button"
-                onClick={() =>
-                  setField("quiz", {
-                    title: "",
-                    questions: [
-                      {
-                        id: String(Date.now()),
-                        text: "",
-                        options: ["", "", "", ""],
-                        answer: "",
-                      },
-                    ],
-                  })
-                }
-              >
-                Add Quiz
-              </button>
-            </div>
+            <button className="btn-ghost" type="button" onClick={addEmptyQuiz}>
+              + Add Quiz
+            </button>
           )}
         </div>
       </div>

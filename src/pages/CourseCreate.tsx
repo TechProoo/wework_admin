@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CourseForm from "./CourseForm";
+import PreviewConfirmModal from "../components/PreviewConfirmModal";
 
 export default function CourseCreate() {
   const navigate = useNavigate();
-  const [preview, setPreview] = useState<any>(null);
+  const location = useLocation();
+  const initialFromState = (location.state as any)?.initial ?? null;
+
+  const [preview, setPreview] = useState<any>(initialFromState ?? null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const handleSubmit = async (payload: any, token?: string) => {
     const base = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
@@ -42,7 +47,7 @@ export default function CourseCreate() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 mt-20">
         <div>
           <h2 className="text-2xl font-bold">Create Course</h2>
           <div className="muted">
@@ -54,108 +59,44 @@ export default function CourseCreate() {
       <div className="create-grid">
         <div className="create-form">
           <CourseForm
+            initial={initialFromState ?? undefined}
             onSubmit={handleSubmit}
             submitLabel="Create"
+            hideSubmit={true}
             onChange={(p) => setPreview(p)}
           />
-        </div>
 
-        <aside className="card p-4 preview-aside">
-          <div style={{ display: "flex", gap: 12 }}>
-            <div style={{ width: 86, height: 86 }}>
-              {preview?.thumbnail ? (
-                <img
-                  src={preview.thumbnail}
-                  alt="thumb"
-                  style={{
-                    width: 86,
-                    height: 86,
-                    objectFit: "cover",
-                    borderRadius: 8,
-                  }}
-                />
-              ) : (
-                <div
-                  className="course-thumb"
-                  style={{
-                    width: 86,
-                    height: 86,
-                    borderRadius: 10,
-                    fontSize: 26,
-                  }}
-                >
-                  {preview?.title ? preview.title.charAt(0).toUpperCase() : "C"}
-                </div>
-              )}
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <div
-                className="preview-title"
-                style={{ fontWeight: 800, fontSize: 16 }}
-              >
-                {preview?.title || "Course title preview"}
-              </div>
-              <div className="muted" style={{ marginTop: 6 }}>
-                {preview?.category
-                  ? `${preview.category} • ${preview.level}`
-                  : "Category • Level"}
-              </div>
-              <div className="muted" style={{ marginTop: 10, fontSize: 13 }}>
-                {preview?.description
-                  ? preview.description.slice(0, 160)
-                  : "Short description will appear here. Add an engaging summary to entice students."}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 border-b" />
-
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div>
-              <div className="muted text-sm">Lessons</div>
-              <div className="font-semibold">
-                {preview?.lessons?.length ?? 0}
-              </div>
-            </div>
-            <div>
-              <div className="muted text-sm">Duration</div>
-              <div className="font-semibold">
-                {preview?.duration ? `${preview.duration} min` : "—"}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <div className="muted text-sm">Status</div>
-            <div className="mt-2">
-              <span
-                className={
-                  "badge " +
-                  (preview?.isPublished ? "badge-success" : "badge-muted")
-                }
-              >
-                {preview?.isPublished ? "Published" : "Draft"}
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-4 flex gap-2">
-            <button
-              className="comic-button"
-              onClick={() => alert("Preview mode not implemented")}
-            >
-              Open preview
-            </button>
+          <div className="mt-4 flex items-center justify-end gap-3">
             <button
               className="btn-ghost"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              onClick={() => navigate("/courses")}
+              type="button"
             >
-              Back to form
+              Cancel
+            </button>
+            <button
+              className="comic-button"
+              onClick={() => setPreviewOpen(true)}
+              disabled={!preview}
+            >
+              Preview & Confirm
             </button>
           </div>
-        </aside>
+        </div>
       </div>
+      <PreviewConfirmModal
+        open={previewOpen}
+        payload={preview}
+        onClose={() => setPreviewOpen(false)}
+        onConfirm={async () => {
+          try {
+            if (!preview) return;
+            await handleSubmit(preview);
+          } catch (err: any) {
+            alert(err?.message || String(err));
+          }
+        }}
+      />
     </div>
   );
 }

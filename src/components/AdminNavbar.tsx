@@ -1,10 +1,20 @@
 import { useEffect, useRef, useState } from "react";
+import { useNewCourse } from "../contexts/NewCourseContext";
 import { Link } from "react-router-dom";
 
 export default function AdminNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  let newCourseOpen: { open: (p?: any) => void } | null = null;
+  try {
+    // attempt to access the context; if provider not mounted this throws
+    // but we keep it safe so navbar still renders independently
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    newCourseOpen = (useNewCourse() as any) || null;
+  } catch (e) {
+    newCourseOpen = null;
+  }
 
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -69,7 +79,14 @@ export default function AdminNavbar() {
 
           <button
             className="comic-button"
-            onClick={() => setMenuOpen((s) => !s)}
+            onClick={() => {
+              if (newCourseOpen) {
+                newCourseOpen.open();
+                setMenuOpen(false);
+                return;
+              }
+              setMenuOpen((s) => !s);
+            }}
             aria-haspopup
           >
             +
@@ -115,7 +132,15 @@ export default function AdminNavbar() {
             ))}
           </div>
           <div className="mobile-actions">
-            <button className="btn">New Course</button>
+            <button
+              className="btn"
+              onClick={() => {
+                newCourseOpen?.open();
+                setMobileOpen(false);
+              }}
+            >
+              New Course
+            </button>
           </div>
         </div>
       </div>
