@@ -1,18 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchCourses } from "../api/courses";
-import { fetchUsers } from "../api/users";
-import { fetchCompanies } from "../api/companies";
+
 import { useNewCourse } from "../contexts/NewCourseContext";
+import { getTotalCourses, fetchCourses } from "../api/courses";
+import { getTotalUsers, fetchUsers } from "../api/users";
+import { getTotalCompanies, fetchCompanies } from "../api/companies";
 
 export default function Overview() {
   const [loading, setLoading] = useState(true);
+  // recent lists (left empty by default; fetching full lists is optional)
   const [courses, setCourses] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [companies, setCompanies] = useState<any[]>([]);
-  const [apiStatus, setApiStatus] = useState<"checking" | "ok" | "error">(
-    "checking"
+  // totals from API
+  const [apiTotalCourses, setApiTotalCourses] = useState<number | null>(null);
+  const [apiTotalUsers, setApiTotalUsers] = useState<number | null>(null);
+  const [apiTotalCompanies, setApiTotalCompanies] = useState<number | null>(
+    null
   );
+  const [, setApiStatus] = useState<"checking" | "ok" | "error">("checking");
 
   const newCourse = (() => {
     try {
@@ -26,22 +32,59 @@ export default function Overview() {
   useEffect(() => {
     let mounted = true;
 
-    const loadData = async () => {
+    const loadTotals = async () => {
       setLoading(true);
       try {
-        const [c, u, cmp] = await Promise.allSettled([
-          fetchCourses(),
-          fetchUsers(),
-          fetchCompanies(),
+        // fetch totals and recent lists in parallel
+        const [
+          coursesCountRes,
+          usersCountRes,
+          companiesCountRes,
+          coursesRes,
+          usersRes,
+          companiesRes,
+        ] = await Promise.all([
+          getTotalCourses().catch((e) => {
+            console.error("getTotalCourses failed", e);
+            return null;
+          }),
+          getTotalUsers().catch((e) => {
+            console.error("getTotalUsers failed", e);
+            return null;
+          }),
+          getTotalCompanies().catch((e) => {
+            console.error("getTotalCompanies failed", e);
+            return null;
+          }),
+          fetchCourses().catch((e) => {
+            console.error("fetchCourses failed", e);
+            return [] as any[];
+          }),
+          fetchUsers().catch((e) => {
+            console.error("fetchUsers failed", e);
+            return [] as any[];
+          }),
+          fetchCompanies().catch((e) => {
+            console.error("fetchCompanies failed", e);
+            return [] as any[];
+          }),
         ]);
 
         if (!mounted) return;
 
-        if (c.status === "fulfilled") setCourses(c.value ?? []);
-        if (u.status === "fulfilled") setUsers(u.value ?? []);
-        if (cmp.status === "fulfilled") setCompanies(cmp.value ?? []);
+        if (coursesCountRes != null)
+          setApiTotalCourses(coursesCountRes as number);
+        if (usersCountRes != null) setApiTotalUsers(usersCountRes as number);
+        if (companiesCountRes != null)
+          setApiTotalCompanies(companiesCountRes as number);
 
-        setApiStatus(c.status === "fulfilled" ? "ok" : "error");
+        // set recent lists
+        setCourses((coursesRes as any[]) ?? []);
+        setUsers((usersRes as any[]) ?? []);
+        setCompanies((companiesRes as any[]) ?? []);
+
+        // We only check one result for api health here — courses count
+        setApiStatus(coursesCountRes != null ? "ok" : "error");
       } catch (err) {
         console.error(err);
         if (mounted) setApiStatus("error");
@@ -50,17 +93,22 @@ export default function Overview() {
       }
     };
 
-    loadData();
+    loadTotals();
     return () => {
       mounted = false;
     };
   }, []);
 
   const totals = useMemo(() => {
-    const totalCourses = courses.length;
+    const totalCourses = apiTotalCourses ?? courses.length;
     const published = courses.filter((c) => c.published).length;
-    return { totalCourses, published, drafts: totalCourses - published };
-  }, [courses]);
+    return {
+      totalCourses,
+      published,
+      drafts: Number(totalCourses) - published,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courses, apiTotalCourses]);
 
   return (
     <div className="p-6">
@@ -76,21 +124,6 @@ export default function Overview() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span
-            className={`px-3 py-1 rounded-md text-sm font-medium ${
-              apiStatus === "ok"
-                ? "bg-green-100 text-green-800"
-                : apiStatus === "checking"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-red-100 text-red-800"
-            }`}
-          >
-            {apiStatus === "checking"
-              ? "Checking API…"
-              : apiStatus === "ok"
-              ? "API Connected"
-              : "API Error"}
-          </span>
           <button
             onClick={() => newCourse?.open()}
             className="px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-sm hover:shadow-md transition-all"
@@ -104,7 +137,7 @@ export default function Overview() {
       <section className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         <MetricCard
           title="Total Courses"
-          value={loading ? "—" : totals.totalCourses}
+          value={loading ? "—" : apiTotalCourses ?? totals.totalCourses}
           subtitle={
             loading
               ? "Loading..."
@@ -124,7 +157,7 @@ export default function Overview() {
         />
         <MetricCard
           title="Students"
-          value={loading ? "—" : users.length}
+          value={loading ? "—" : apiTotalUsers ?? users.length}
           subtitle="Active learners"
           icon={
             <svg
@@ -143,7 +176,7 @@ export default function Overview() {
         />
         <MetricCard
           title="Companies"
-          value={loading ? "—" : companies.length}
+          value={loading ? "—" : apiTotalCompanies ?? companies.length}
           subtitle="Employers & partners"
           icon={
             <svg

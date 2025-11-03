@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import CourseForm from "./CourseForm";
-import { fetchCourse, updateCourse } from "../api/courses";
+// import { fetchCourse, updateCourse } from "../api/courses";
 
 export default function CourseEdit() {
   const { id } = useParams();

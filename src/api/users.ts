@@ -1,79 +1,38 @@
-const API_BASE =
-  (import.meta.env as any).VITE_API_BASE_URL ||
-  (import.meta.env as any).VITE_API_URL ||
-  "";
+import { httpClient } from "./axiosClient";
 
-export async function fetchUsers() {
+export const getTotalUsers = async (): Promise<number> => {
   try {
-    const res = await fetch(API_BASE + "/students", {
-      credentials: "include",
-    });
-    if (!res.ok) throw new Error("No users endpoint");
-    const body = await res.json();
-    return body.data || body;
-  } catch (err) {
-    // Backend does not expose list users in current API; return mock data
-    return [
-      {
-        id: "u1",
-        firstName: "Alice",
-        lastName: "Anderson",
-        email: "alice@example.com",
-      },
-      {
-        id: "u2",
-        firstName: "Bob",
-        lastName: "Brown",
-        email: "bob@example.com",
-      },
-    ];
+    const res = await httpClient.get("/students/count");
+    const body = res.data as any;
+    if (body && typeof body.data?.total === "number") return body.data.total;
+    if (typeof body === "number") return body;
+    console.log("Total users", res)
+    return 0;
+  } catch (error: unknown) {
+    console.error("Failed to fetch total students:", error);
+    return 0;
   }
-}
+};
 
-export async function fetchUser(id: string) {
+export const fetchUsers = async (): Promise<any[]> => {
   try {
-    const res = await fetch(API_BASE + `/students/${id}`, {
-      credentials: "include",
-    });
-    if (!res.ok) throw new Error("User not found");
-    const body = await res.json();
-    return body.data || body;
-  } catch (_) {
-    return {
-      id,
-      firstName: "Demo",
-      lastName: "User",
-      email: `user+${id}@example.com`,
-    };
+    const res = await httpClient.get("/students");
+    const body = res.data as any;
+    // controller typically returns { statusCode, message, data }
+    return body?.data ?? [];
+  } catch (error: unknown) {
+    console.error("Failed to fetch users:", error);
+    return [];
   }
-}
+};
 
-export async function updateUser(id: string, payload: any) {
+export const fetchUser = async (id: string): Promise<any | null> => {
   try {
-    const res = await fetch(API_BASE + `/students/${id}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error("Update failed");
-    const body = await res.json();
-    return body.data || body;
-  } catch (err) {
-    throw err;
+    const res = await httpClient.get(`/students/${id}`);
+    const body = res.data as any;
+    return body?.data ?? null;
+  } catch (error: unknown) {
+    console.error("Failed to fetch user:", error);
+    return null;
   }
-}
-
-export async function deleteUser(id: string) {
-  try {
-    const res = await fetch(API_BASE + `/students/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (!res.ok) throw new Error("Delete failed");
-    const body = await res.json();
-    return body;
-  } catch (_) {
-    return { success: true };
-  }
-}
+};

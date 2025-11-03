@@ -1,63 +1,37 @@
-const API_BASE =
-  (import.meta.env as any).VITE_API_BASE_URL ||
-  (import.meta.env as any).VITE_API_URL ||
-  "";
+import { httpClient } from "./axiosClient";
 
-export async function fetchCompanies() {
+export const getTotalCompanies = async (): Promise<number> => {
   try {
-    const res = await fetch(API_BASE + "/companies", {
-      credentials: "include",
-    });
-    if (!res.ok) throw new Error("No companies endpoint");
-    const body = await res.json();
-    return body.data || body;
-  } catch (_) {
-    return [
-      { id: "c1", name: "Acme Inc", email: "hello@acme.com" },
-      { id: "c2", name: "Globex", email: "contact@globex.com" },
-    ];
+    const res = await httpClient.get("/companies/count");
+    const body = res.data as any;
+    if (body && typeof body.data?.total === "number") return body.data.total;
+    if (typeof body === "number") return body;
+    console.log(res)
+    return 0;
+  } catch (error: unknown) {
+    console.error("Failed to fetch total companies:", error);
+    return 0;
   }
-}
+};
 
-export async function fetchCompany(id: string) {
+export const fetchCompanies = async (): Promise<any[]> => {
   try {
-    const res = await fetch(API_BASE + `/companies/${id}`, {
-      credentials: "include",
-    });
-    if (!res.ok) throw new Error("Company not found");
-    const body = await res.json();
-    return body.data || body;
-  } catch (_) {
-    return { id, name: "Demo Company", email: `company+${id}@example.com` };
+    const res = await httpClient.get("/companies");
+    const body = res.data as any;
+    return body?.data ?? [];
+  } catch (error: unknown) {
+    console.error("Failed to fetch companies:", error);
+    return [];
   }
-}
+};
 
-export async function updateCompany(id: string, payload: any) {
+export const fetchCompany = async (id: string): Promise<any | null> => {
   try {
-    const res = await fetch(API_BASE + `/companies/${id}`, {
-      method: "PATCH",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error("Update failed");
-    const body = await res.json();
-    return body.data || body;
-  } catch (err) {
-    throw err;
+    const res = await httpClient.get(`/companies/${id}`);
+    const body = res.data as any;
+    return body?.data ?? null;
+  } catch (error: unknown) {
+    console.error("Failed to fetch company:", error);
+    return null;
   }
-}
-
-export async function deleteCompany(id: string) {
-  try {
-    const res = await fetch(API_BASE + `/companies/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (!res.ok) throw new Error("Delete failed");
-    const body = await res.json();
-    return body;
-  } catch (_) {
-    return { success: true };
-  }
-}
+};
