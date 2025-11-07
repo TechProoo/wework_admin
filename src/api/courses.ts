@@ -213,7 +213,7 @@ const dataUrlToFile = (dataUrl: string, filename: string): File => {
  * - Metadata update with optional thumbnail upload
  * - Lesson synchronization (create, update, delete)
  * - Quiz synchronization per lesson
- * 
+ *
  * @param courseId - The ID of the course to update
  * @param payload - The complete course payload with lessons and quizzes
  * @param initial - The initial course data for comparison
@@ -223,12 +223,16 @@ export const updateCourseWithLessons = async (
   courseId: string,
   payload: any,
   initial: any,
-  onProgress?: (step: string, status: "pending" | "done" | "failed", message?: string) => void
+  onProgress?: (
+    step: string,
+    status: "pending" | "done" | "failed",
+    message?: string
+  ) => void
 ) => {
   try {
     // Step 1: Update course metadata
     onProgress?.("meta", "pending", "Saving metadata…");
-    
+
     const metadata = {
       title: payload.title,
       category: payload.category,
@@ -266,7 +270,7 @@ export const updateCourseWithLessons = async (
 
     // Step 2: Synchronize lessons
     onProgress?.("lessons", "pending", "Syncing lessons…");
-    
+
     const initialLessonMap = new Map(
       (initial?.lessons || []).map((l: any) => [l.id, l])
     );
@@ -318,7 +322,10 @@ export const updateCourseWithLessons = async (
           try {
             await deleteQuiz(oldLesson.id);
           } catch (err) {
-            console.warn(`Failed to delete quiz for lesson ${oldLesson.id}`, err);
+            console.warn(
+              `Failed to delete quiz for lesson ${oldLesson.id}`,
+              err
+            );
           }
         }
         await deleteLesson(oldLesson.id);
@@ -337,14 +344,18 @@ export const updateCourseWithLessons = async (
 
 /**
  * Creates a new course with lessons and quizzes
- * 
+ *
  * @param payload - The complete course payload with lessons and quizzes
  * @param onProgress - Optional callback for progress updates
  * @returns The created course with ID
  */
 export const createCourseWithLessons = async (
   payload: any,
-  onProgress?: (step: string, status: "pending" | "done" | "failed", message?: string) => void
+  onProgress?: (
+    step: string,
+    status: "pending" | "done" | "failed",
+    message?: string
+  ) => void
 ) => {
   try {
     onProgress?.("course", "pending", "Creating course…");

@@ -84,122 +84,126 @@ export default function LessonForm({
         }
       `}</style>
       <div className="card mb-4 p-4">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="font-medium text-lg">
-          Lesson: {local.title || "Untitled Lesson"}
-        </h3>
-        {onRemove && (
-          <button
-            type="button"
-            className="btn-ghost text-sm"
-            onClick={onRemove}
-          >
-            Remove Lesson
-          </button>
-        )}
-      </div>
-
-      {/* Lesson Details */}
-      <div className="grid gap-3">
-        <input
-          value={local.title}
-          onChange={(e) => updateField("title", e.target.value)}
-          className="search-input"
-          placeholder="Lesson title"
-        />
-
-        <div className="flex gap-3 flex-wrap">
-          <input
-            type="number"
-            value={local.order}
-            onChange={(e) => updateField("order", Number(e.target.value))}
-            className="search-input flex-1"
-            placeholder="Order"
-            min={1}
-            onWheel={(e) => e.currentTarget.blur()}
-          />
-          <input
-            type="number"
-            value={local.duration}
-            onChange={(e) => updateField("duration", Number(e.target.value))}
-            className="search-input flex-1"
-            placeholder="Duration (minutes)"
-            min={1}
-            onWheel={(e) => e.currentTarget.blur()}
-          />
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={local.isPreview}
-              onChange={(e) => updateField("isPreview", e.target.checked)}
-            />
-            Preview
-          </label>
-        </div>
-
-        <ErrorBoundary
-          fallback={
-            <div className="p-4 border-2 border-red-300 rounded bg-red-50 text-red-800">
-              <p className="font-semibold">Editor failed to load</p>
-              <p className="text-sm mt-1">
-                Please refresh the page or contact support if the issue
-                persists.
-              </p>
-            </div>
-          }
-        >
-          {typeof local.content === "string" ? (
-            <LessonEditor
-              value={local.content}
-              onChange={(value) => updateField("content", value)}
-              placeholder="Write your lesson content here..."
-            />
-          ) : (
-            <div className="p-4 border rounded text-sm text-gray-500">
-              Loading editor...
-            </div>
-          )}
-        </ErrorBoundary>
-
-        <input
-          value={local.videoUrl}
-          onChange={(e) => updateField("videoUrl", e.target.value)}
-          className="search-input"
-          placeholder="Video URL"
-        />
-
-        {/* Video preview */}
-        {local.videoUrl && (
-          <div className="mt-2">
-            <video
-              src={local.videoUrl}
-              controls
-              style={{ width: "100%", maxHeight: 240 }}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Preview of the lesson video
-            </p>
-          </div>
-        )}
-
-        {/* Quiz Section */}
-        <div className="mt-3">
-          <label className="font-medium block mb-2">Quiz (optional)</label>
-          {local.quiz ? (
-            <QuizForm
-              quiz={local.quiz}
-              onChange={(quiz) => updateField("quiz", quiz)}
-              onRemove={() => updateField("quiz", null)}
-            />
-          ) : (
-            <button className="btn-ghost" type="button" onClick={addEmptyQuiz}>
-              + Add Quiz
+        {/* Header */}
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-medium text-lg">
+            Lesson: {local.title || "Untitled Lesson"}
+          </h3>
+          {onRemove && (
+            <button
+              type="button"
+              className="btn-ghost text-sm"
+              onClick={onRemove}
+            >
+              Remove Lesson
             </button>
           )}
         </div>
+
+        {/* Lesson Details */}
+        <div className="grid gap-3">
+          <input
+            value={local.title}
+            onChange={(e) => updateField("title", e.target.value)}
+            className="search-input"
+            placeholder="Lesson title"
+          />
+
+          <div className="flex gap-3 flex-wrap">
+            <input
+              type="number"
+              value={local.order}
+              onChange={(e) => updateField("order", Number(e.target.value))}
+              className="search-input flex-1"
+              placeholder="Order"
+              min={1}
+              onWheel={(e) => e.currentTarget.blur()}
+            />
+            <input
+              type="number"
+              value={local.duration}
+              onChange={(e) => updateField("duration", Number(e.target.value))}
+              className="search-input flex-1"
+              placeholder="Duration (minutes)"
+              min={1}
+              onWheel={(e) => e.currentTarget.blur()}
+            />
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={local.isPreview}
+                onChange={(e) => updateField("isPreview", e.target.checked)}
+              />
+              Preview
+            </label>
+          </div>
+
+          <ErrorBoundary
+            fallback={
+              <div className="p-4 border-2 border-red-300 rounded bg-red-50 text-red-800">
+                <p className="font-semibold">Editor failed to load</p>
+                <p className="text-sm mt-1">
+                  Please refresh the page or contact support if the issue
+                  persists.
+                </p>
+              </div>
+            }
+          >
+            {typeof local.content === "string" ? (
+              <LessonEditor
+                value={local.content}
+                onChange={(value) => updateField("content", value)}
+                placeholder="Write your lesson content here..."
+              />
+            ) : (
+              <div className="p-4 border rounded text-sm text-gray-500">
+                Loading editor...
+              </div>
+            )}
+          </ErrorBoundary>
+
+          <input
+            value={local.videoUrl}
+            onChange={(e) => updateField("videoUrl", e.target.value)}
+            className="search-input"
+            placeholder="Video URL"
+          />
+
+          {/* Video preview */}
+          {local.videoUrl && (
+            <div className="mt-2">
+              <video
+                src={local.videoUrl}
+                controls
+                style={{ width: "100%", maxHeight: 240 }}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Preview of the lesson video
+              </p>
+            </div>
+          )}
+
+          {/* Quiz Section */}
+          <div className="mt-3">
+            <label className="font-medium block mb-2">Quiz (optional)</label>
+            {local.quiz ? (
+              <QuizForm
+                quiz={local.quiz}
+                onChange={(quiz) => updateField("quiz", quiz)}
+                onRemove={() => updateField("quiz", null)}
+              />
+            ) : (
+              <button
+                className="btn-ghost"
+                type="button"
+                onClick={addEmptyQuiz}
+              >
+                + Add Quiz
+              </button>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
     </>
   );
 }

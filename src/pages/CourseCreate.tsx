@@ -62,7 +62,10 @@ export default function CourseCreate() {
       </div>
 
       {error && (
-        <div className="card p-3 mb-4 text-sm" style={{ background: "#ffecec" }}>
+        <div
+          className="card p-3 mb-4 text-sm"
+          style={{ background: "#ffecec" }}
+        >
           {error}
         </div>
       )}

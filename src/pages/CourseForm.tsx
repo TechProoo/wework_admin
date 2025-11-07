@@ -190,7 +190,7 @@ export default function CourseForm({
   });
 
   const handlePreview = () => {
-    navigate('/courses/preview', { state: { course: buildPayload() } });
+    navigate("/courses/preview", { state: { course: buildPayload() } });
   };
 
   // call onChange when form fields change
@@ -398,14 +398,10 @@ export default function CourseForm({
 
       {!hideSubmit && (
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handlePreview}
-            className="btn-ghost"
-          >
+          <button type="button" onClick={handlePreview} className="btn-ghost">
             Preview Course
           </button>
-          
+
           <button
             type="submit"
             disabled={submitting}

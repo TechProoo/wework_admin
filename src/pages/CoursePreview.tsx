@@ -52,10 +52,7 @@ export default function CoursePreview() {
           <p className="text-gray-600 mb-4">
             Please navigate from the course creation page.
           </p>
-          <button
-            onClick={() => navigate(-1)}
-            className="btn"
-          >
+          <button onClick={() => navigate(-1)} className="btn">
             Go Back
           </button>
         </div>
@@ -72,16 +69,16 @@ export default function CoursePreview() {
       <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="btn-ghost"
-            >
+            <button onClick={() => navigate(-1)} className="btn-ghost">
               ← Back to Editor
             </button>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">{course.title}</h1>
+              <h1 className="text-xl font-bold text-gray-900">
+                {course.title}
+              </h1>
               <p className="text-sm text-gray-500">
-                {course.category} • {course.level} • {sortedLessons.length} Lessons
+                {course.category} • {course.level} • {sortedLessons.length}{" "}
+                Lessons
               </p>
             </div>
           </div>
@@ -101,7 +98,10 @@ export default function CoursePreview() {
             </p>
           </div>
 
-          <nav className="overflow-y-auto" style={{ maxHeight: "calc(100vh - 145px)" }}>
+          <nav
+            className="overflow-y-auto"
+            style={{ maxHeight: "calc(100vh - 145px)" }}
+          >
             {sortedLessons.map((lesson, index) => (
               <button
                 key={lesson.id}
@@ -193,7 +193,8 @@ export default function CoursePreview() {
                     {currentLesson.quiz.title || "Lesson Quiz"}
                   </h3>
                   <p className="text-gray-600">
-                    Test your understanding with {currentLesson.quiz.questions.length} question
+                    Test your understanding with{" "}
+                    {currentLesson.quiz.questions.length} question
                     {currentLesson.quiz.questions.length !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -232,7 +233,13 @@ export default function CoursePreview() {
                                 {optionLabel}
                               </div>
                               <div className="flex-1">
-                                <p className={isCorrect ? "text-green-900 font-medium" : "text-gray-700"}>
+                                <p
+                                  className={
+                                    isCorrect
+                                      ? "text-green-900 font-medium"
+                                      : "text-gray-700"
+                                  }
+                                >
                                   {option}
                                 </p>
                               </div>

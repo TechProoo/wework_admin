@@ -17,7 +17,7 @@ type Toast = {
 export default function CourseEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [initial, setInitial] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,10 +38,10 @@ export default function CourseEdit() {
 
   useEffect(() => {
     if (!id) return;
-    
+
     setLoading(true);
     setError(null);
-    
+
     (async () => {
       try {
         const course = await fetchCourse(id);
@@ -72,7 +72,8 @@ export default function CourseEdit() {
         initial,
         (step, status, message) => {
           setStep(step, status);
-          if (message) showToast(message, status === "done" ? "success" : "info");
+          if (message)
+            showToast(message, status === "done" ? "success" : "info");
         }
       );
 
