@@ -111,7 +111,7 @@ export default function Overview() {
   }, [courses, apiTotalCourses]);
 
   return (
-    <div className="p-3 md:p-6 max-w-7xl mx-auto">
+    <div className="p-5 md:p-6 max-w-7xl mx-auto">
       {/* Header */}
       <header className="mb-4 md:mb-8">
         <div className="flex flex-col gap-3 md:gap-4">
@@ -290,7 +290,10 @@ export default function Overview() {
               title="No courses yet"
               message="Create your first course to get started"
               action={
-                <button onClick={() => newCourse?.open()} className="btn mt-3 text-xs md:text-sm">
+                <button
+                  onClick={() => newCourse?.open()}
+                  className="btn mt-3 text-xs md:text-sm"
+                >
                   Create Course
                 </button>
               }
@@ -391,7 +394,9 @@ export default function Overview() {
                     />
                   </svg>
                 </div>
-                <h4 className="text-sm md:text-base font-bold text-gray-800">Companies</h4>
+                <h4 className="text-sm md:text-base font-bold text-gray-800">
+                  Companies
+                </h4>
               </div>
               <Link
                 to="/companies"
@@ -495,7 +500,9 @@ function MetricCard({
             )}
           </div>
           {subtitle && (
-            <p className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1.5 truncate">{subtitle}</p>
+            <p className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1.5 truncate">
+              {subtitle}
+            </p>
           )}
         </div>
         <div className="flex-shrink-0 ml-2 p-2 md:p-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl text-primary group-hover:scale-110 transition-transform duration-200">
@@ -582,7 +589,9 @@ function UserItemRow({ user }: { user: any }) {
         <h4 className="font-medium text-gray-900 truncate text-xs md:text-sm">
           {user.firstName} {user.lastName}
         </h4>
-        <p className="text-[10px] md:text-xs text-gray-500 truncate">{user.email}</p>
+        <p className="text-[10px] md:text-xs text-gray-500 truncate">
+          {user.email}
+        </p>
       </div>
       <svg
         className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
