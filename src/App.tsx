@@ -28,7 +28,7 @@ export default function App() {
           <AdminNavbar />
 
           <div className="mt-10">
-            <main className="container">
+            <main className="">
               <Routes>
                 <Route path="/" element={<Overview />} />
                 <Route path="/courses" element={<CoursesList />} />
