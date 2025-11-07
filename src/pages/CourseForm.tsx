@@ -54,15 +54,6 @@ export default function CourseForm({
   const [thumbnail, setThumbnail] = useState(initial.thumbnail ?? "");
   const [description, setDescription] = useState(initial.description ?? "");
   const [isPublished, setIsPublished] = useState(!!initial.isPublished);
-  const [tutorialTitle, setTutorialTitle] = useState(
-    initial.tutorial?.title ?? ""
-  );
-  const [tutorialContent, setTutorialContent] = useState(
-    initial.tutorial?.content ?? ""
-  );
-  const [tutorialVideo, setTutorialVideo] = useState(
-    initial.tutorial?.videoUrl ?? ""
-  );
 
   const [lessons, setLessons] = useState<Lesson[]>(
     initial.lessons ?? [makeLesson()]
@@ -96,8 +87,6 @@ export default function CourseForm({
     if (!title.trim()) return "Title is required";
     if (!category.trim()) return "Category is required";
     if (!level) return "Level is required";
-    // if (!tutorialTitle.trim()) return "Tutorial title is required";
-    // if (!tutorialContent.trim()) return "Tutorial content is required";
     for (const l of lessons) {
       if (!l.title.trim()) return "All lessons must have a title";
     }
@@ -124,16 +113,6 @@ export default function CourseForm({
       thumbnail,
       description,
       isPublished,
-      // include tutorial only when any field present
-      ...(tutorialTitle || tutorialContent || tutorialVideo
-        ? {
-            tutorial: {
-              title: tutorialTitle,
-              content: tutorialContent,
-              videoUrl: tutorialVideo,
-            },
-          }
-        : {}),
       // include lesson ids so the edit orchestration can distinguish existing vs new
       lessons: lessons.map((l) => ({
         id: (l as any).id,
@@ -222,9 +201,6 @@ export default function CourseForm({
     thumbnail,
     description,
     isPublished,
-    tutorialTitle,
-    tutorialContent,
-    tutorialVideo,
     lessons,
   ]);
 
@@ -371,37 +347,6 @@ export default function CourseForm({
           onChange={(e) => setDescription(e.target.value)}
           className="textarea-field"
         />
-      </div>
-
-      <div className="form-section">
-        <h4 className="font-semibold mb-2">Tutorial</h4>
-        <input
-          value={tutorialTitle}
-          onChange={(e) => setTutorialTitle(e.target.value)}
-          className="input-field mb-2"
-          placeholder="Tutorial title"
-        />
-        <textarea
-          value={tutorialContent}
-          onChange={(e) => setTutorialContent(e.target.value)}
-          className="textarea-field mb-2"
-          placeholder="Tutorial content"
-        />
-        <input
-          value={tutorialVideo}
-          onChange={(e) => setTutorialVideo(e.target.value)}
-          className="input-field"
-          placeholder="Tutorial video URL"
-        />
-        {tutorialVideo ? (
-          <div className="mt-2">
-            <video
-              src={tutorialVideo}
-              controls
-              style={{ width: "100%", maxHeight: 320 }}
-            />
-          </div>
-        ) : null}
       </div>
 
       <div>
