@@ -24,11 +24,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <NewCourseProvider>
-        <div>
+        <div className="min-h-screen">
           <AdminNavbar />
 
           <div className="mt-10">
-            <main>
+            <main className="container">
               <Routes>
                 <Route path="/" element={<Overview />} />
                 <Route path="/courses" element={<CoursesList />} />

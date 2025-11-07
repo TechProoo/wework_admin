@@ -67,30 +67,30 @@ export default function CoursePreview() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate(-1)} className="btn-ghost">
-              ← Back to Editor
+        <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+            <button onClick={() => navigate(-1)} className="btn-ghost text-sm md:text-base whitespace-nowrap">
+              ← Back
             </button>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-base md:text-xl font-bold text-gray-900 truncate">
                 {course.title}
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-xs md:text-sm text-gray-500 truncate">
                 {course.category} • {course.level} • {sortedLessons.length}{" "}
                 Lessons
               </p>
             </div>
           </div>
-          <div className="text-sm text-gray-600 bg-blue-50 px-3 py-1 rounded">
-            📖 Preview Mode
+          <div className="text-xs md:text-sm text-gray-600 bg-blue-50 px-2 md:px-3 py-1 rounded whitespace-nowrap">
+            📖 Preview
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto flex">
-        {/* Sidebar - Lesson Navigation */}
-        <aside className="w-80 bg-white border-r min-h-screen sticky top-[73px] self-start">
+        {/* Sidebar - Lesson Navigation (Desktop) */}
+        <aside className="course-preview-sidebar w-80 bg-white border-r min-h-screen sticky top-[73px] self-start">
           <div className="p-4 border-b bg-gray-50">
             <h2 className="font-semibold text-gray-900">Course Content</h2>
             <p className="text-sm text-gray-600 mt-1">
@@ -145,23 +145,41 @@ export default function CoursePreview() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 bg-white">
-          <div className="max-w-4xl mx-auto px-8 py-8">
+        <main className="course-preview-main flex-1 bg-white">
+          {/* Mobile Lesson Selector */}
+          <div className="course-preview-mobile-selector border-b bg-gray-50 p-3 md:hidden">
+            <label className="text-xs font-medium text-gray-600 block mb-1">
+              Select Lesson
+            </label>
+            <select
+              value={selectedLessonIndex}
+              onChange={(e) => setSelectedLessonIndex(Number(e.target.value))}
+              className="w-full p-2 border rounded bg-white text-sm"
+            >
+              {sortedLessons.map((lesson, index) => (
+                <option key={lesson.id} value={index}>
+                  {index + 1}. {lesson.title || `Lesson ${index + 1}`} ({lesson.duration} min)
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="max-w-4xl mx-auto px-4 md:px-8 py-6 md:py-8">
             {/* Lesson Header */}
-            <div className="mb-8">
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+            <div className="mb-6 md:mb-8">
+              <div className="flex items-center gap-2 text-xs md:text-sm text-gray-500 mb-2">
                 <span>Lesson {selectedLessonIndex + 1}</span>
                 <span>•</span>
                 <span>{currentLesson.duration} minutes</span>
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                 {currentLesson.title || `Lesson ${selectedLessonIndex + 1}`}
               </h2>
             </div>
 
             {/* Video */}
             {currentLesson.videoUrl && (
-              <div className="mb-8">
+              <div className="mb-6 md:mb-8">
                 <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden">
                   <video
                     src={currentLesson.videoUrl}
@@ -174,7 +192,7 @@ export default function CoursePreview() {
             )}
 
             {/* Lesson Content */}
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               <div className="prose prose-lg max-w-none">
                 <ReactQuill
                   value={currentLesson.content || "<p>No content available</p>"}
@@ -259,18 +277,18 @@ export default function CoursePreview() {
             )}
 
             {/* Navigation Buttons */}
-            <div className="flex items-center justify-between mt-12 pt-8 border-t">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mt-8 md:mt-12 pt-6 md:pt-8 border-t">
               <button
                 onClick={() =>
                   selectedLessonIndex > 0 &&
                   setSelectedLessonIndex(selectedLessonIndex - 1)
                 }
                 disabled={selectedLessonIndex === 0}
-                className="btn-ghost disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-ghost disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
               >
                 ← Previous Lesson
               </button>
-              <div className="text-sm text-gray-500">
+              <div className="text-xs sm:text-sm text-gray-500 text-center">
                 {selectedLessonIndex + 1} of {sortedLessons.length}
               </div>
               <button
@@ -279,7 +297,7 @@ export default function CoursePreview() {
                   setSelectedLessonIndex(selectedLessonIndex + 1)
                 }
                 disabled={selectedLessonIndex === sortedLessons.length - 1}
-                className="btn-ghost disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-ghost disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
               >
                 Next Lesson →
               </button>
