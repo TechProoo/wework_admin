@@ -40,7 +40,7 @@ export default function CourseDetail() {
   if (!id) return <div className="p-4 md:p-6">Invalid course id</div>;
 
   return (
-    <div className="p-3 md:p-6 max-w-7xl mx-auto">
+    <div className="p-3 md:p-6 md:scale-[0] m scale-[.8.95] ml-[-30px] md:[ml-0] max-w-7xl mx-auto">
       {loading ? (
         <div className="space-y-3 md:space-y-6">
           {/* Header Skeleton */}
@@ -184,7 +184,7 @@ export default function CourseDetail() {
               </div>
 
               {/* Course Info */}
-              <div className="space-y-3 md:space-y-4">
+              <div className="space-y-3 md:space-y-4 p-2">
                 <div>
                   <h1 className="text-xl md:text-3xl font-extrabold text-gray-900 mb-2 leading-tight">
                     {course.title}
