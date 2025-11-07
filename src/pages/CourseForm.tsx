@@ -345,7 +345,7 @@ export default function CourseForm({
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="textarea-field"
+          className="textarea-field h-[300px]"
         />
       </div>
 

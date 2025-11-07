@@ -1,28 +1,39 @@
 import { Link } from "react-router-dom";
 
 export default function AdminFooter() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="w-full bg-[#f4f2f3] bottom  border-t border-[#64766a] mt-12 text-[#3c4d42]">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="font-extrabold text-lg">WEWORK Admin</span>
-          <span className="px-2 py-1 rounded-full bg-[#64766a] text-white text-xs font-bold">
+    <footer className="w-full bg-[#f4f2f3] border-t border-[#64766a] text-[#3c4d42] py-6 mt-12">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 px-4">
+        {/* Left Section */}
+        <div className="flex items-center gap-2">
+          <span className="font-extrabold text-lg tracking-tight">WEWORK Admin</span>
+          <span className="px-2 py-0.5 rounded-full bg-[#64766a] text-white text-xs font-semibold">
             Dashboard
           </span>
         </div>
-        <div className="flex gap-4">
-          <Link to="/" className="muted">
-            Home
-          </Link>
-          <Link to="/courses" className="muted">
-            Courses
-          </Link>
-          <Link to="/contact" className="muted">
-            Contact
-          </Link>
-        </div>
-        <div className="text-sm muted">
-          © {new Date().getFullYear()} WeWork — Admin
+
+        {/* Middle Section (Navigation) */}
+        <nav className="flex gap-5 text-sm font-medium">
+          {[
+            { to: "/", label: "Home" },
+            { to: "/courses", label: "Courses" },
+            { to: "/contact", label: "Contact" },
+          ].map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="transition-colors text-[#3c4d42] hover:text-[#64766a] focus:text-[#64766a] outline-none"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right Section */}
+        <div className="text-xs text-[#64766a]">
+          © {currentYear} WeWork — Admin Panel
         </div>
       </div>
     </footer>

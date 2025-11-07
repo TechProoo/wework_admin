@@ -1,5 +1,7 @@
 import { useState } from "react";
 import QuizForm from "./QuizForm";
+import LessonEditor from "./textEditor";
+import ErrorBoundary from "./ErrorBoundary";
 
 type Question = {
   id: string;
@@ -30,12 +32,23 @@ interface LessonFormProps {
   onRemove?: () => void;
 }
 
+const defaultLesson: Lesson = {
+  id: "",
+  title: "",
+  order: 1,
+  duration: 0,
+  isPreview: false,
+  content: "",
+  videoUrl: "",
+  quiz: null,
+};
+
 export default function LessonForm({
   lesson,
   onChange,
   onRemove,
 }: LessonFormProps) {
-  const [local, setLocal] = useState<Lesson>(lesson);
+  const [local, setLocal] = useState<Lesson>({ ...defaultLesson, ...lesson });
 
   const updateField = <K extends keyof Lesson>(key: K, value: Lesson[K]) => {
     const updated = { ...local, [key]: value };
@@ -111,13 +124,29 @@ export default function LessonForm({
           </label>
         </div>
 
-        <textarea
-          value={local.content}
-          onChange={(e) => updateField("content", e.target.value)}
-          style={{ height: "100px", borderRadius: "10px" }}
-          className="w-full border rounded px-3 py-2 resize-none"
-          placeholder="Lesson content..."
-        />
+        <ErrorBoundary
+          fallback={
+            <div className="p-4 border-2 border-red-300 rounded bg-red-50 text-red-800">
+              <p className="font-semibold">Editor failed to load</p>
+              <p className="text-sm mt-1">
+                Please refresh the page or contact support if the issue
+                persists.
+              </p>
+            </div>
+          }
+        >
+          {typeof local.content === "string" ? (
+            <LessonEditor
+              value={local.content}
+              onChange={(value) => updateField("content", value)}
+              placeholder="Write your lesson content here..."
+            />
+          ) : (
+            <div className="p-4 border rounded text-sm text-gray-500">
+              Loading editor...
+            </div>
+          )}
+        </ErrorBoundary>
 
         <input
           value={local.videoUrl}

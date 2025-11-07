@@ -57,7 +57,7 @@ export default function CourseCreate() {
       </div>
 
       <div className="w-[1]">
-        <div className="create-form">
+        <div className="">
           <CourseForm
             initial={initialFromState ?? undefined}
             onSubmit={handleSubmit}
