@@ -113,23 +113,6 @@ export default function CourseDetail() {
             </div>
           </div>
 
-          {course.tutorial && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Course Tutorial</h3>
-                <div className="text-sm text-slate-500">{formatDate((course.tutorial as any).createdAt)}</div>
-              </div>
-
-              <div className="mt-3 text-slate-700">{(course.tutorial as any).title}</div>
-              <div className="mt-2 text-slate-600 whitespace-pre-wrap">{(course.tutorial as any).content}</div>
-              {(course.tutorial as any).videoUrl && (
-                <div className="mt-4">
-                  <a href={(course.tutorial as any).videoUrl} target="_blank" rel="noreferrer" className="text-primary-600">Watch intro video</a>
-                </div>
-              )}
-            </div>
-          )}
-
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Lessons ({course.lessons?.length ?? 0})</h3>

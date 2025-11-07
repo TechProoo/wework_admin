@@ -83,7 +83,7 @@ export default function CoursesList() {
     }
     if (status !== "all") {
       list = list.filter((c) =>
-        status === "published" ? c.published : !c.published
+        status === "published" ? c.isPublished : !c.isPublished
       );
     }
     if (sort === "newest") {
