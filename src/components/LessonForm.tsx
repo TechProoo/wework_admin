@@ -75,8 +75,12 @@ export default function LessonForm({
       <style>{`
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+          -webkit-appearance: none !important;
+          margin: 0 !important;
+          display: none !important;
+        }
+        input[type="number"] {
+          -moz-appearance: textfield !important;
         }
       `}</style>
       <div className="card mb-4 p-4">
@@ -113,9 +117,6 @@ export default function LessonForm({
             className="search-input flex-1"
             placeholder="Order"
             min={1}
-            style={{
-              MozAppearance: "textfield",
-            }}
             onWheel={(e) => e.currentTarget.blur()}
           />
           <input
@@ -125,9 +126,6 @@ export default function LessonForm({
             className="search-input flex-1"
             placeholder="Duration (minutes)"
             min={1}
-            style={{
-              MozAppearance: "textfield",
-            }}
             onWheel={(e) => e.currentTarget.blur()}
           />
           <label className="flex items-center gap-2 text-sm">
