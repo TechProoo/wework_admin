@@ -71,7 +71,15 @@ export default function LessonForm({
   };
 
   return (
-    <div className="card mb-4 p-4">
+    <>
+      <style>{`
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      `}</style>
+      <div className="card mb-4 p-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-medium text-lg">
@@ -105,6 +113,10 @@ export default function LessonForm({
             className="search-input flex-1"
             placeholder="Order"
             min={1}
+            style={{
+              MozAppearance: "textfield",
+            }}
+            onWheel={(e) => e.currentTarget.blur()}
           />
           <input
             type="number"
@@ -113,6 +125,10 @@ export default function LessonForm({
             className="search-input flex-1"
             placeholder="Duration (minutes)"
             min={1}
+            style={{
+              MozAppearance: "textfield",
+            }}
+            onWheel={(e) => e.currentTarget.blur()}
           />
           <label className="flex items-center gap-2 text-sm">
             <input
@@ -186,5 +202,6 @@ export default function LessonForm({
         </div>
       </div>
     </div>
+    </>
   );
 }
