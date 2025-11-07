@@ -81,61 +81,118 @@ export default function CourseDetail() {
               <div className="lg:col-span-2">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-2xl font-semibold text-slate-900">{course.title}</h1>
-                    <div className="mt-1 text-sm text-slate-500">{course.category} • {course.level}</div>
+                    <h1 className="text-2xl font-semibold text-slate-900">
+                      {course.title}
+                    </h1>
+                    <div className="mt-1 text-sm text-slate-500">
+                      {course.category} • {course.level}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="text-sm text-slate-500 text-right">
                       <div>Created</div>
-                      <div className="font-medium">{formatDate(course.createdAt)}</div>
+                      <div className="font-medium">
+                        {formatDate(course.createdAt)}
+                      </div>
                     </div>
 
-                    <Link to={`/courses/${id}/edit`} className="inline-flex items-center rounded-md bg-primary-600 text-white px-3 py-2 text-sm">
+                    <Link
+                      to={`/courses/${id}/edit`}
+                      className="inline-flex items-center rounded-md bg-primary-600 text-white px-3 py-2 text-sm"
+                    >
                       Edit
                     </Link>
                   </div>
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-2 items-center">
-                  <span className={"inline-flex items-center px-2 py-1 rounded text-xs font-medium " + (course.isPublished ? "bg-green-100 text-green-800" : "bg-slate-100 text-slate-700")}>
+                  <span
+                    className={
+                      "inline-flex items-center px-2 py-1 rounded text-xs font-medium " +
+                      (course.isPublished
+                        ? "bg-green-100 text-green-800"
+                        : "bg-slate-100 text-slate-700")
+                    }
+                  >
                     {course.isPublished ? "Published" : "Draft"}
                   </span>
 
-                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">Duration: {formatDuration(course.duration)}</div>
-                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">Students: {course.students}</div>
-                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">Rating: {course.rating ?? 0}</div>
-                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">Price: {course.price === 0 ? "Free" : `$${course.price}`}</div>
+                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">
+                    Duration: {formatDuration(course.duration)}
+                  </div>
+                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">
+                    Students: {course.students}
+                  </div>
+                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">
+                    Rating: {course.rating ?? 0}
+                  </div>
+                  <div className="text-sm text-slate-600 px-2 py-1 bg-slate-50 rounded">
+                    Price: {course.price === 0 ? "Free" : `$${course.price}`}
+                  </div>
                 </div>
 
-                <div className="mt-6 text-slate-700 whitespace-pre-wrap">{course.description}</div>
+                <div className="mt-6 text-slate-700 whitespace-pre-wrap">
+                  {course.description}
+                </div>
               </div>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Lessons ({course.lessons?.length ?? 0})</h3>
-              <div className="text-sm text-slate-500">Total: {formatDuration((course.lessons || []).reduce((s, l) => s + (l.duration || 0), 0))}</div>
+              <h3 className="text-lg font-semibold">
+                Lessons ({course.lessons?.length ?? 0})
+              </h3>
+              <div className="text-sm text-slate-500">
+                Total:{" "}
+                {formatDuration(
+                  (course.lessons || []).reduce(
+                    (s, l) => s + (l.duration || 0),
+                    0
+                  )
+                )}
+              </div>
             </div>
 
             <div className="mt-4 divide-y">
-              {(course.lessons || []).sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0)).map((lesson: any) => (
-                <div key={lesson.id} className="py-4 flex items-start justify-between gap-4">
-                  <div>
-                    <div className="font-medium text-slate-900">{lesson.title}</div>
-                    <div className="text-sm text-slate-500 mt-1">{formatDuration(lesson.duration)} • {lesson.isPreview ? "Preview" : "Full"}</div>
-                    <div className="text-sm text-slate-600 mt-2 line-clamp-3 whitespace-pre-wrap">{lesson.content}</div>
-                  </div>
+              {(course.lessons || [])
+                .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+                .map((lesson: any) => (
+                  <div
+                    key={lesson.id}
+                    className="py-4 flex items-start justify-between gap-4"
+                  >
+                    <div>
+                      <div className="font-medium text-slate-900">
+                        {lesson.title}
+                      </div>
+                      <div className="text-sm text-slate-500 mt-1">
+                        {formatDuration(lesson.duration)} •{" "}
+                        {lesson.isPreview ? "Preview" : "Full"}
+                      </div>
+                      <div className="text-sm text-slate-600 mt-2 line-clamp-3 whitespace-pre-wrap">
+                        {lesson.content}
+                      </div>
+                    </div>
 
-                  <div className="flex flex-col items-end gap-2">
-                    {lesson.videoUrl && (
-                      <a href={lesson.videoUrl} target="_blank" rel="noreferrer" className="text-sm text-primary-600">Open video</a>
-                    )}
-                    <div className="text-sm text-slate-500">Created: {formatDate(lesson.createdAt)}</div>
+                    <div className="flex flex-col items-end gap-2">
+                      {lesson.videoUrl && (
+                        <a
+                          href={lesson.videoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm text-primary-600"
+                        >
+                          Open video
+                        </a>
+                      )}
+                      <div className="text-sm text-slate-500">
+                        Created: {formatDate(lesson.createdAt)}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>

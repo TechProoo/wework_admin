@@ -23,19 +23,25 @@ body {
 }
 
 /* Prevent horizontal scroll on mobile */
-html, body {
+html,
+body {
   overflow-x: hidden;
   width: 100%;
 }
 
 /* Improve touch targets on mobile */
 @media (max-width: 768px) {
-  button, a, input, select, textarea {
+  button,
+  a,
+  input,
+  select,
+  textarea {
     min-height: 44px;
   }
-  
+
   /* Improve tap highlighting */
-  button, a {
+  button,
+  a {
     -webkit-tap-highlight-color: rgba(100, 119, 106, 0.1);
   }
 }
@@ -141,12 +147,14 @@ html, body {
 
 /* Mobile button adjustments */
 @media (max-width: 768px) {
-  .btn, .btn-ghost, .comic-button {
+  .btn,
+  .btn-ghost,
+  .comic-button {
     padding: 10px 14px;
     font-size: 14px;
     min-height: 44px; /* Better touch target */
   }
-  
+
   .btn-sm {
     padding: 8px 12px;
     font-size: 13px;
@@ -173,20 +181,20 @@ html, body {
     gap: 8px;
     padding: 14px;
   }
-  
+
   .course-thumb {
     width: 100%;
     max-width: 100px;
     height: auto;
     aspect-ratio: 1;
   }
-  
+
   .course-meta {
     width: 100%;
     text-align: left;
     min-width: auto;
   }
-  
+
   .card-actions {
     width: 100%;
     justify-content: flex-start;
@@ -352,7 +360,8 @@ button:focus-visible {
   .flex-mobile-col {
     flex-direction: column;
   }
-  .gap-3, .gap-4 {
+  .gap-3,
+  .gap-4 {
     gap: 0.5rem;
   }
 }
@@ -442,15 +451,15 @@ button:focus-visible {
   .text-3xl {
     font-size: 1.5rem;
   }
-  
+
   .text-2xl {
     font-size: 1.25rem;
   }
-  
+
   .text-xl {
     font-size: 1rem;
   }
-  
+
   .admin-page-title {
     font-size: 18px;
   }
@@ -514,7 +523,7 @@ button:focus-visible {
     position: static;
     margin-bottom: 20px;
   }
-  
+
   .create-form {
     max-height: none;
     overflow: visible;
@@ -646,18 +655,18 @@ button:focus-visible {
   .form-panel {
     gap: 12px;
   }
-  
+
   .form-section {
     padding: 12px;
   }
-  
+
   .input-field,
   .search-input,
   .textarea-field {
     font-size: 16px; /* Prevents zoom on iOS */
     padding: 12px;
   }
-  
+
   .textarea-field {
     min-height: 100px;
   }
@@ -794,25 +803,25 @@ button:focus-visible {
     text-align: center;
     padding: 20px;
   }
-  
+
   .empty-illustration {
     width: 160px;
     height: 120px;
   }
-  
+
   .empty-title {
     font-size: 18px;
   }
-  
+
   .empty-actions {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .empty-actions button {
     width: 100%;
   }
-  
+
   .empty-tip-list {
     grid-template-columns: 1fr;
   }
@@ -939,7 +948,7 @@ button:focus-visible {
   .space-y-4 > * + * {
     margin-top: 0.75rem;
   }
-  
+
   .space-y-6 > * + * {
     margin-top: 1rem;
   }
@@ -991,7 +1000,7 @@ button:focus-visible {
     margin: 0 -14px;
     padding: 0 14px;
   }
-  
+
   table {
     min-width: 600px;
   }
@@ -1003,7 +1012,7 @@ button:focus-visible {
   .course-preview-sidebar {
     display: none;
   }
-  
+
   .course-preview-main {
     width: 100%;
   }
@@ -1026,7 +1035,50 @@ button:focus-visible {
   }
 }
 
-/* comic-button (platform brand button style mirrored from main site) */
+/* Overview page enhancements */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Gradient text support */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.text-transparent {
+  color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}/* comic-button (platform brand button style mirrored from main site) */
 .comic-button {
   padding: 6px 14px;
   font-size: 15px;
@@ -1238,7 +1290,7 @@ button:focus-visible {
   .search-input {
     display: none;
   }
-  
+
   /* Ensure hamburger is visible */
   .hamburger {
     display: inline-flex !important;
@@ -1247,19 +1299,19 @@ button:focus-visible {
     cursor: pointer;
     padding: 4px;
   }
-  
+
   /* Full-width mobile menu */
   .mobile-menu-inner {
     width: calc(100% - 32px);
     margin: 16px;
     max-width: none;
   }
-  
+
   /* Adjust brand sizing */
   .brand-main {
     font-size: 16px;
   }
-  
+
   .brand-sub {
     font-size: 11px;
   }
