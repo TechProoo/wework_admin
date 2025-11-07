@@ -111,25 +111,25 @@ export default function Overview() {
   }, [courses, apiTotalCourses]);
 
   return (
-    <div className="md:p-6 max-w-7xl mx-auto p-3">
+    <div className="p-3 md:p-6 max-w-7xl mx-auto">
       {/* Header */}
-      <header className="mb-6 md:mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <header className="mb-4 md:mb-8">
+        <div className="flex flex-col gap-3 md:gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-xl md:text-3xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-tight">
               Admin Dashboard
             </h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-xs md:text-sm text-gray-600 mt-1">
               Welcome back! Here's what's happening with your platform.
             </p>
           </div>
 
           <button
             onClick={() => newCourse?.open()}
-            className="comic-button w-full sm:w-auto justify-center"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 md:py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all text-sm md:text-base w-full md:w-auto md:self-start"
           >
             <svg
-              className="w-5 h-5 mr-1.5 inline-block"
+              className="w-4 h-4 md:w-5 md:h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -147,7 +147,7 @@ export default function Overview() {
       </header>
 
       {/* Metrics Section */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10">
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-4 md:mb-10">
         <MetricCard
           title="Total Courses"
           value={loading ? "—" : apiTotalCourses ?? totals.totalCourses}
@@ -218,14 +218,14 @@ export default function Overview() {
       </section>
 
       {/* Content Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6">
         {/* Recent Courses */}
         <Card className="lg:col-span-2">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <svg
-                  className="w-5 h-5 text-primary"
+                  className="w-4 h-4 md:w-5 md:h-5 text-primary"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -238,17 +238,17 @@ export default function Overview() {
                   />
                 </svg>
               </div>
-              <h3 className="text-base md:text-lg font-bold text-gray-800">
+              <h3 className="text-sm md:text-lg font-bold text-gray-800">
                 Recent Courses
               </h3>
             </div>
             <Link
               to="/courses"
-              className="text-primary text-sm font-semibold hover:underline flex items-center gap-1"
+              className="text-primary text-xs md:text-sm font-semibold hover:underline flex items-center gap-1"
             >
               View all
               <svg
-                className="w-4 h-4"
+                className="w-3 h-3 md:w-4 md:h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -263,10 +263,10 @@ export default function Overview() {
             </Link>
           </div>
           {loading ? (
-            <div className="space-y-3">
+            <div className="space-y-2 md:space-y-3">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="animate-pulse">
-                  <div className="h-16 bg-gray-100 rounded-lg"></div>
+                  <div className="h-12 md:h-16 bg-gray-100 rounded-lg"></div>
                 </div>
               ))}
             </div>
@@ -274,7 +274,7 @@ export default function Overview() {
             <EmptyState
               icon={
                 <svg
-                  className="w-16 h-16 text-gray-300"
+                  className="w-12 h-12 md:w-16 md:h-16 text-gray-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -290,13 +290,13 @@ export default function Overview() {
               title="No courses yet"
               message="Create your first course to get started"
               action={
-                <button onClick={() => newCourse?.open()} className="btn mt-3">
+                <button onClick={() => newCourse?.open()} className="btn mt-3 text-xs md:text-sm">
                   Create Course
                 </button>
               }
             />
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1 md:space-y-2">
               {courses.slice(0, 6).map((c) => (
                 <CourseItemRow key={c.id} course={c} />
               ))}
@@ -305,13 +305,13 @@ export default function Overview() {
         </Card>
 
         {/* Users & Companies */}
-        <div className="space-y-4 md:space-y-6">
+        <div className="space-y-3 md:space-y-6">
           <Card>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
                   <svg
-                    className="w-5 h-5 text-blue-600"
+                    className="w-4 h-4 md:w-5 md:h-5 text-blue-600"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -324,22 +324,22 @@ export default function Overview() {
                     />
                   </svg>
                 </div>
-                <h4 className="text-base font-bold text-gray-800">
+                <h4 className="text-sm md:text-base font-bold text-gray-800">
                   Recent Users
                 </h4>
               </div>
               <Link
                 to="/users"
-                className="text-blue-600 text-sm font-semibold hover:underline"
+                className="text-blue-600 text-xs md:text-sm font-semibold hover:underline"
               >
                 View all
               </Link>
             </div>
             {loading ? (
-              <div className="space-y-3">
+              <div className="space-y-2 md:space-y-3">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="h-10 md:h-12 bg-gray-100 rounded-lg"></div>
                   </div>
                 ))}
               </div>
@@ -347,7 +347,7 @@ export default function Overview() {
               <EmptyState
                 icon={
                   <svg
-                    className="w-12 h-12 text-gray-300"
+                    className="w-10 h-10 md:w-12 md:h-12 text-gray-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -365,7 +365,7 @@ export default function Overview() {
                 compact
               />
             ) : (
-              <div className="space-y-1">
+              <div className="space-y-0.5 md:space-y-1">
                 {users.slice(0, 5).map((u) => (
                   <UserItemRow key={u.id} user={u} />
                 ))}
@@ -374,11 +374,11 @@ export default function Overview() {
           </Card>
 
           <Card>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
                   <svg
-                    className="w-5 h-5 text-purple-600"
+                    className="w-4 h-4 md:w-5 md:h-5 text-purple-600"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -391,20 +391,20 @@ export default function Overview() {
                     />
                   </svg>
                 </div>
-                <h4 className="text-base font-bold text-gray-800">Companies</h4>
+                <h4 className="text-sm md:text-base font-bold text-gray-800">Companies</h4>
               </div>
               <Link
                 to="/companies"
-                className="text-purple-600 text-sm font-semibold hover:underline"
+                className="text-purple-600 text-xs md:text-sm font-semibold hover:underline"
               >
                 View all
               </Link>
             </div>
             {loading ? (
-              <div className="space-y-3">
+              <div className="space-y-2 md:space-y-3">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-12 bg-gray-100 rounded-lg"></div>
+                    <div className="h-10 md:h-12 bg-gray-100 rounded-lg"></div>
                   </div>
                 ))}
               </div>
@@ -412,7 +412,7 @@ export default function Overview() {
               <EmptyState
                 icon={
                   <svg
-                    className="w-12 h-12 text-gray-300"
+                    className="w-10 h-10 md:w-12 md:h-12 text-gray-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -430,7 +430,7 @@ export default function Overview() {
                 compact
               />
             ) : (
-              <div className="space-y-1">
+              <div className="space-y-0.5 md:space-y-1">
                 {companies.slice(0, 5).map((c) => (
                   <CompanyItemRow key={c.id} company={c} />
                 ))}
@@ -459,24 +459,24 @@ function MetricCard({
   trend?: { value: number; isPositive: boolean };
 }) {
   return (
-    <div className="bg-white border border-gray-100 rounded-xl p-4 md:p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 group">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-xs md:text-sm font-medium text-gray-500 uppercase tracking-wide">
+    <div className="bg-white border border-gray-100 rounded-xl p-3 md:p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 group">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] md:text-sm font-medium text-gray-500 uppercase tracking-wide">
             {title}
           </p>
-          <div className="flex items-baseline gap-2 mt-2">
-            <p className="text-2xl md:text-3xl font-extrabold text-gray-900">
+          <div className="flex items-baseline gap-1.5 md:gap-2 mt-1 md:mt-2">
+            <p className="text-xl md:text-3xl font-extrabold text-gray-900">
               {value}
             </p>
             {trend && (
               <span
-                className={`text-xs font-semibold flex items-center ${
+                className={`text-[10px] md:text-xs font-semibold flex items-center ${
                   trend.isPositive ? "text-green-600" : "text-red-600"
                 }`}
               >
                 <svg
-                  className="w-3 h-3 mr-0.5"
+                  className="w-2.5 h-2.5 md:w-3 md:h-3 mr-0.5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -495,10 +495,10 @@ function MetricCard({
             )}
           </div>
           {subtitle && (
-            <p className="text-xs text-gray-500 mt-1.5">{subtitle}</p>
+            <p className="text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1.5 truncate">{subtitle}</p>
           )}
         </div>
-        <div className="ml-3 p-2.5 md:p-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl text-primary group-hover:scale-110 transition-transform duration-200">
+        <div className="flex-shrink-0 ml-2 p-2 md:p-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl text-primary group-hover:scale-110 transition-transform duration-200">
           {icon}
         </div>
       </div>
@@ -515,7 +515,7 @@ function Card({
 }) {
   return (
     <div
-      className={`bg-white border border-gray-100 rounded-xl shadow-sm p-4 md:p-5 hover:shadow-md transition-shadow ${className}`}
+      className={`bg-white border border-gray-100 rounded-xl shadow-sm p-3 md:p-5 hover:shadow-md transition-shadow ${className}`}
     >
       {children}
     </div>
@@ -528,18 +528,18 @@ function CourseItemRow({ course }: { course: any }) {
   return (
     <Link
       to={`/courses/${course.id}`}
-      className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors group"
+      className="flex items-center gap-2 md:gap-3 p-2 md:p-3 hover:bg-gray-50 rounded-lg transition-colors group"
     >
-      <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg shadow-sm">
+      <div className="flex-shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-sm">
         {course.title ? course.title.charAt(0).toUpperCase() : "C"}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <h4 className="font-semibold text-gray-900 truncate text-sm md:text-base">
+        <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+          <h4 className="font-semibold text-gray-900 truncate text-xs md:text-base">
             {course.title}
           </h4>
           <span
-            className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+            className={`px-1.5 md:px-2 py-0.5 rounded-full text-[10px] md:text-xs font-medium ${
               isPublished
                 ? "bg-green-100 text-green-700"
                 : "bg-gray-100 text-gray-600"
@@ -548,12 +548,12 @@ function CourseItemRow({ course }: { course: any }) {
             {isPublished ? "Published" : "Draft"}
           </span>
         </div>
-        <p className="text-xs md:text-sm text-gray-500 truncate mt-0.5">
+        <p className="text-[10px] md:text-sm text-gray-500 truncate mt-0.5">
           {course.description || "No description"}
         </p>
       </div>
       <svg
-        className="w-5 h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0"
+        className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -573,19 +573,19 @@ function UserItemRow({ user }: { user: any }) {
   return (
     <Link
       to={`/users/${user.id}`}
-      className="flex items-center gap-3 p-2.5 hover:bg-blue-50 rounded-lg transition-colors group"
+      className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 hover:bg-blue-50 rounded-lg transition-colors group"
     >
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+      <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
         {user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"}
       </div>
       <div className="flex-1 min-w-0">
-        <h4 className="font-medium text-gray-900 truncate text-sm">
+        <h4 className="font-medium text-gray-900 truncate text-xs md:text-sm">
           {user.firstName} {user.lastName}
         </h4>
-        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+        <p className="text-[10px] md:text-xs text-gray-500 truncate">{user.email}</p>
       </div>
       <svg
-        className="w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+        className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -605,21 +605,21 @@ function CompanyItemRow({ company }: { company: any }) {
   return (
     <Link
       to={`/companies/${company.id}`}
-      className="flex items-center gap-3 p-2.5 hover:bg-purple-50 rounded-lg transition-colors group"
+      className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 hover:bg-purple-50 rounded-lg transition-colors group"
     >
-      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+      <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
         {company.name ? company.name.charAt(0).toUpperCase() : "C"}
       </div>
       <div className="flex-1 min-w-0">
-        <h4 className="font-medium text-gray-900 truncate text-sm">
+        <h4 className="font-medium text-gray-900 truncate text-xs md:text-sm">
           {company.name}
         </h4>
-        <p className="text-xs text-gray-500 truncate">
+        <p className="text-[10px] md:text-xs text-gray-500 truncate">
           {company.email || "No email"}
         </p>
       </div>
       <svg
-        className="w-4 h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+        className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
