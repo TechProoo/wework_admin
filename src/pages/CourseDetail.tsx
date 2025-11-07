@@ -138,30 +138,48 @@ export default function CourseDetail() {
 
           {/* Course Header Card */}
           <div className="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
-            <div className="p-3 md:p-6 space-y-3 md:space-y-4">
+            <div className=" p-0 md:p-6 space-y-3 md:space-y-4">
               {/* Thumbnail */}
-              <div className="w-full h-40 md:h-56 rounded-lg overflow-hidden bg-gradient-to-br from-primary to-accent flex items-center justify-center group relative">
-                {course.thumbnail ? (
-                  <img
-                    src={course.thumbnail}
-                    alt={course.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="text-4xl md:text-6xl font-extrabold text-white">
-                    {course.title ? course.title.charAt(0).toUpperCase() : "C"}
+              <div className="w-full rounded-lg overflow-hidden relative bg-gradient-to-br from-primary to-accent group">
+                <div className="w-full h-40 sm:h-48 md:h-56 lg:h-64 xl:h-80">
+                  {course.thumbnail ? (
+                    <img
+                      src={course.thumbnail}
+                      alt={course.title || "Course thumbnail"}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-primary/30 text-white">
+                      <span className="text-3xl text-wrap sm:text-4xl md:text-5xl lg:text-6xl font-extrabold select-none">
+                        {course.title ? course.title.charAt(0).toUpperCase() : "C"}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Responsive overlay: shows title/category and status badge; moves to bottom on small screens */}
+                <div className="absolute inset-x-0 bottom-0 md:bottom-4 px-3 md:px-6 py-2 md:py-3 bg-gradient-to-t from-black/50 via-transparent to-transparent text-white backdrop-blur-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="text-sm md:text-base font-semibold truncate">
+                        {course.title}
+                      </div>
+                      <div className="text-[11px] md:text-xs text-white/80 truncate">
+                        {course.category} · {course.level}
+                      </div>
+                    </div>
+
+                    <div className="flex-shrink-0">
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold shadow-lg ${
+                          course.isPublished ? "bg-green-500 text-white" : "bg-gray-700 text-white"
+                        }`}
+                      >
+                        {course.isPublished ? "✓ Published" : "Draft"}
+                      </span>
+                    </div>
                   </div>
-                )}
-                <div className="absolute top-2 right-2">
-                  <span
-                    className={`inline-flex items-center px-2 py-1 md:px-3 md:py-1.5 rounded-full text-xs font-bold shadow-lg ${
-                      course.isPublished
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-700 text-white"
-                    }`}
-                  >
-                    {course.isPublished ? "✓ Published" : "Draft"}
-                  </span>
                 </div>
               </div>
 
@@ -378,10 +396,10 @@ export default function CourseDetail() {
                                 href={lesson.videoUrl}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="btn-ghost text-[10px] md:text-sm whitespace-nowrap self-start mt-1 md:mt-0 px-2 md:px-3 py-1 md:py-1.5"
+                                className="btn-ghost text-xs sm:text-sm whitespace-nowrap"
                               >
                                 <svg
-                                  className="w-3 h-3 md:w-4 md:h-4 mr-0.5 md:mr-1 inline-block"
+                                  className="w-4 h-4 mr-1 inline-block"
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -399,17 +417,17 @@ export default function CourseDetail() {
                                     d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                   />
                                 </svg>
-                                Watch
+                                Watch Video
                               </a>
                             )}
                           </div>
 
                           {lesson.content && (
-                            <p className="text-xs md:text-sm text-gray-600 line-clamp-2 mt-1.5 md:mt-2">
+                            <p className="text-sm text-gray-600 line-clamp-2 mt-2">
                               {lesson.content
                                 .replace(/<[^>]*>/g, "")
-                                .substring(0, 150)}
-                              {lesson.content.length > 150 && "..."}
+                                .substring(0, 200)}
+                              {lesson.content.length > 200 && "..."}
                             </p>
                           )}
                         </div>

@@ -111,7 +111,7 @@ export default function Overview() {
   }, [courses, apiTotalCourses]);
 
   return (
-    <div className="md:p-6 max-w-7xl mx-auto">
+    <div className="md:p-6 max-w-7xl mx-auto p-3">
       {/* Header */}
       <header className="mb-6 md:mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
