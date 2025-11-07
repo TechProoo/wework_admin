@@ -20,6 +20,7 @@ type Props = {
   onChange?: (payload: any) => void;
   submitLabel?: string;
   hideSubmit?: boolean;
+  onSuccess?: () => void;
 };
 
 function makeLesson(): Lesson {
@@ -41,6 +42,7 @@ export default function CourseForm({
   submitLabel = "Save",
   onChange,
   hideSubmit = false,
+  onSuccess,
 }: Props) {
   const [title, setTitle] = useState(initial.title ?? "");
   const [category, setCategory] = useState(initial.category ?? "");
@@ -52,22 +54,22 @@ export default function CourseForm({
   const [thumbnail, setThumbnail] = useState(initial.thumbnail ?? "");
   const [description, setDescription] = useState(initial.description ?? "");
   const [isPublished, setIsPublished] = useState(!!initial.isPublished);
-
-  // const [tutorialTitle, setTutorialTitle] = useState(
-  //   initial.tutorial?.title ?? ""
-  // );
-  // const [tutorialContent, setTutorialContent] = useState(
-  //   initial.tutorial?.content ?? ""
-  // );
-  // const [tutorialVideo, setTutorialVideo] = useState(
-  //   initial.tutorial?.videoUrl ?? ""
-  // );
+  const [tutorialTitle, setTutorialTitle] = useState(
+    initial.tutorial?.title ?? ""
+  );
+  const [tutorialContent, setTutorialContent] = useState(
+    initial.tutorial?.content ?? ""
+  );
+  const [tutorialVideo, setTutorialVideo] = useState(
+    initial.tutorial?.videoUrl ?? ""
+  );
 
   const [lessons, setLessons] = useState<Lesson[]>(
     initial.lessons ?? [makeLesson()]
   );
 
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // token removed: auth token input is no longer supported in the form
 
@@ -76,7 +78,14 @@ export default function CourseForm({
   }
 
   function addLesson() {
-    setLessons((s) => [...s, makeLesson()]);
+    setLessons((s) => {
+      const next = makeLesson();
+      if (!s || s.length === 0) return [next];
+      // insert before the last lesson so the new section appears on top of the last one
+      const copy = s.slice();
+      copy.splice(copy.length - 1, 0, next);
+      return copy;
+    });
   }
 
   function removeLesson(index: number) {
@@ -115,29 +124,58 @@ export default function CourseForm({
       thumbnail,
       description,
       isPublished,
-      // tutorial: {
-      //   title: tutorialTitle,
-      //   content: tutorialContent,
-      //   videoUrl: tutorialVideo,
-      // },
+      // include tutorial only when any field present
+      ...(tutorialTitle || tutorialContent || tutorialVideo
+        ? {
+            tutorial: {
+              title: tutorialTitle,
+              content: tutorialContent,
+              videoUrl: tutorialVideo,
+            },
+          }
+        : {}),
+      // include lesson ids so the edit orchestration can distinguish existing vs new
       lessons: lessons.map((l) => ({
+        id: (l as any).id,
         title: l.title,
         order: l.order,
         duration: l.duration,
         isPreview: l.isPreview,
         content: l.content,
         videoUrl: l.videoUrl,
-        quiz: l.quiz ?? undefined,
+        // include quiz only if provided
+        ...(l.quiz ? { quiz: l.quiz } : {}),
       })),
     };
-
-    setLoading(true);
+    // Use separate submitting state so UI can show progress reliably
+    setSubmitting(true);
+    let ok = false;
     try {
-      await onSubmit(payload);
+      // Await parent onSubmit so we only clear submitting after orchestration completes
+      const res = await onSubmit(payload);
+      // treat successful resolution as ok (parent can return { success: true } optionally)
+      ok =
+        res === undefined || res === null
+          ? true
+          : !!(res && (res.success === undefined ? true : res.success));
     } catch (err: any) {
       setError(err?.message || String(err));
+      ok = false;
     } finally {
-      setLoading(false);
+      setSubmitting(false);
+    }
+
+    if (ok) {
+      setSuccess(true);
+      // show success briefly then call onSuccess if provided
+      setTimeout(() => {
+        setSuccess(false);
+        try {
+          onSuccess?.();
+        } catch (e) {
+          // ignore
+        }
+      }, 900);
     }
   };
 
@@ -184,9 +222,9 @@ export default function CourseForm({
     thumbnail,
     description,
     isPublished,
-    // tutorialTitle,
-    // tutorialContent,
-    // tutorialVideo,
+    tutorialTitle,
+    tutorialContent,
+    tutorialVideo,
     lessons,
   ]);
 
@@ -335,7 +373,7 @@ export default function CourseForm({
         />
       </div>
 
-      {/* <div className="form-section">
+      <div className="form-section">
         <h4 className="font-semibold mb-2">Tutorial</h4>
         <input
           value={tutorialTitle}
@@ -364,7 +402,7 @@ export default function CourseForm({
             />
           </div>
         ) : null}
-      </div> */}
+      </div>
 
       <div>
         <div className="flex items-center justify-between mb-2">
@@ -404,8 +442,19 @@ export default function CourseForm({
 
       {!hideSubmit && (
         <div className="flex items-center gap-3">
-          <button type="submit" disabled={loading} className="btn">
-            {loading ? "Creating..." : submitLabel}
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn"
+            aria-busy={submitting}
+          >
+            {submitting
+              ? submitLabel
+                ? `${submitLabel}…`
+                : "Saving…"
+              : success
+              ? "Updated successfully"
+              : submitLabel}
           </button>
         </div>
       )}

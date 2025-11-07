@@ -116,76 +116,77 @@ export default function CoursesList() {
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h2 className="text-2xl font-bold">Courses</h2>
-          <div className="muted">
+          <div className="text-sm text-slate-500 mt-1">
             Manage course content, tutorials and lessons
           </div>
         </div>
 
-        <div className="flex gap-3 items-center">
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <input
             placeholder="Search courses..."
-            className="search-input"
+            className="px-3 py-2 border rounded-md shadow-sm w-full sm:w-64"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ minWidth: 220 }}
+            aria-label="Search courses"
           />
 
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value as any)}
-            className="form-select"
-          >
-            <option value="all">All</option>
-            <option value="published">Published</option>
-            <option value="draft">Draft</option>
-          </select>
+          <div className="flex gap-2 items-center">
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value as any)}
+              className="form-select"
+              aria-label="Filter by status"
+            >
+              <option value="all">All</option>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
 
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as any)}
-            className="form-select"
-          >
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="title">Title</option>
-          </select>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as any)}
+              className="form-select"
+              aria-label="Sort courses"
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="title">Title</option>
+            </select>
 
-          <button onClick={() => newCourse?.open()} className="btn">
-            New Course
-          </button>
+            <div className="flex gap-2 items-center">
+              <button
+                onClick={() => newCourse?.open()}
+                className="bg-primary-600 text-white px-3 py-2 rounded-md shadow-sm hover:opacity-95"
+              >
+                New Course
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {error && <div className="text-red-600 mb-4">{error}</div>}
 
       {loading ? (
-        <div className="cards-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {Array.from({ length: pageSize }).map((_, i) => (
-            <div key={i} className="card p-4" style={{ minHeight: 110 }}>
-              <div
-                className="skeleton"
-                style={{ height: 18, width: "50%", marginBottom: 8 }}
-              />
-              <div
-                className="skeleton"
-                style={{ height: 12, width: "80%", marginBottom: 10 }}
-              />
-              <div className="skeleton" style={{ height: 36, width: "30%" }} />
-            </div>
+            <div
+              key={i}
+              className="p-4 rounded-lg bg-white shadow-sm animate-pulse"
+              style={{ minHeight: 120 }}
+            />
           ))}
         </div>
       ) : courses && total === 0 ? (
-        <div className="card empty-state">
-          <div className="empty-bg-blob" aria-hidden />
-          <div className="empty-illustration" aria-hidden>
-            {/* simple inline SVG illustration with gentle float */}
+        <div className="card p-8 rounded-xl bg-white shadow-md flex flex-col items-center text-center">
+          <div className="w-40 h-28 mb-4" aria-hidden>
+            {/* lightweight illustration */}
             <svg
-              className="float"
-              width="180"
-              height="120"
+              width="160"
+              height="110"
               viewBox="0 0 180 120"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -199,8 +200,6 @@ export default function CoursesList() {
                 fill="#F6F6FF"
                 stroke="#E9E7FF"
               />
-              <rect x="28" y="30" width="48" height="8" rx="4" fill="#E8E6FF" />
-              <rect x="28" y="46" width="36" height="8" rx="4" fill="#E8E6FF" />
               <rect
                 x="108"
                 y="28"
@@ -210,126 +209,143 @@ export default function CoursesList() {
                 fill="#FFF7F0"
                 stroke="#FFEBE0"
               />
-              <circle cx="135" cy="56" r="12" fill="#FFE3D0" />
-              <path
-                d="M8 96c8-6 20-10 36-10 20 0 36 6 44 10H8z"
-                fill="#F0F6F2"
-              />
             </svg>
           </div>
 
-          <div className="empty-body">
-            <div className="empty-title">No courses yet</div>
-            <div className="empty-sub">
-              Create a course to share lessons, tutorials or paid content with
-              students.
-            </div>
+          <div className="text-lg font-semibold">No courses yet</div>
+          <div className="text-sm text-slate-500 mt-2 max-w-xl">
+            Create a course to share lessons, tutorials or paid content with
+            students.
+          </div>
 
-            <div className="empty-actions">
-              <button
-                onClick={() => navigate("/courses/new")}
-                className="comic-button empty-cta-primary"
-              >
-                Create course
-              </button>
-              <button onClick={onImportClick} className="btn-ghost btn-sm">
-                Import CSV
-              </button>
-              <Link
-                to="/courses/new?template=starter"
-                className="btn-ghost btn-sm"
-              >
-                Create sample
-              </Link>
-            </div>
-            <input
-              ref={fileInputRef}
-              className="import-input"
-              type="file"
-              accept=".csv,text/csv"
-              onChange={onImportChange}
-            />
+          <div className="flex gap-3 mt-5">
+            <button
+              onClick={() => navigate("/courses/new")}
+              className="bg-primary-600 text-white px-4 py-2 rounded-md"
+            >
+              Create course
+            </button>
+            <button
+              onClick={onImportClick}
+              className="px-3 py-2 rounded-md border"
+            >
+              Import CSV
+            </button>
+            <Link
+              to="/courses/new?template=starter"
+              className="px-3 py-2 rounded-md border"
+            >
+              Create sample
+            </Link>
+          </div>
 
-            <div className="empty-tips">
-              <div className="muted">Quick tips</div>
-              <div className="empty-tip-list">
-                <div className="empty-tip">
-                  Add a short description — helps students discover your course.
-                </div>
-                <div className="empty-tip">
-                  Use lessons with videos to increase engagement.
-                </div>
-                <div className="empty-tip">
-                  Publish when ready — you can always update later.
-                </div>
-                <div className="empty-tip">
-                  Create sample quizzes to keep learners involved.
-                </div>
-              </div>
-            </div>
+          <input
+            ref={fileInputRef}
+            className="hidden"
+            type="file"
+            accept=".csv,text/csv"
+            onChange={onImportChange}
+          />
+
+          <div className="mt-6 text-sm text-slate-500 max-w-lg">
+            <div className="font-medium text-slate-600">Quick tips</div>
+            <ul className="list-disc list-inside mt-2 text-left space-y-1">
+              <li>
+                Add a short description — helps students discover your course.
+              </li>
+              <li>Use lessons with videos to increase engagement.</li>
+              <li>Publish when ready — you can always update later.</li>
+            </ul>
           </div>
         </div>
       ) : (
         <div>
-          <div className="cards-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {current.map((c) => (
-              <div key={c.id} className="card course-row p-4">
-                <div className="course-thumb">
-                  {c.title ? c.title.charAt(0).toUpperCase() : "C"}
+              <div
+                key={c.id}
+                className="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
+              >
+                <div
+                  className="w-full h-36 bg-gray-50 flex items-center justify-center text-3xl font-bold text-white"
+                  style={
+                    c.thumbnail || (c as any).thumbnailUrl
+                      ? {
+                          backgroundImage: `url(${
+                            c.thumbnail ?? (c as any).thumbnailUrl
+                          })`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }
+                      : { backgroundColor: "#64766a" }
+                  }
+                >
+                  {!c.thumbnail &&
+                    !(c as any).thumbnailUrl &&
+                    (c.title ? c.title.charAt(0).toUpperCase() : "C")}
                 </div>
 
-                <div style={{ flex: 1 }}>
-                  <div className="title" style={{ fontSize: 16 }}>
-                    {c.title}
+                <div className="p-4 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="text-base font-semibold text-slate-900 line-clamp-2">
+                      {c.title}
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      {formatDate(c.createdAt)}
+                    </div>
                   </div>
-                  <div className="muted line-clamp-2" style={{ marginTop: 6 }}>
+
+                  <div className="text-sm text-slate-500 mt-2 line-clamp-3">
                     {c.description ?? "No description"}
                   </div>
-                  <div className="mt-3 card-actions">
-                    <Link to={`/courses/${c.id}`} className="btn-ghost btn-sm">
-                      View
-                    </Link>
-                    <Link
-                      to={`/courses/${c.id}/edit`}
-                      className="btn-ghost btn-sm"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => onDelete(c.id)}
-                      className="btn-ghost btn-sm"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
 
-                <div className="course-meta">
-                  <div className="muted" style={{ fontSize: 13 }}>
-                    {formatDate(c.createdAt)}
-                  </div>
-                  <div style={{ marginTop: 8 }}>
-                    <span
-                      className={
-                        "badge " +
-                        (c.published ? "badge-success" : "badge-muted")
-                      }
-                    >
-                      {c.published ? "Published" : "Draft"}
-                    </span>
+                  <div className="mt-4 flex items-center justify-between">
+                    <div>
+                      <span
+                        className={
+                          "inline-flex items-center px-2 py-1 rounded text-xs font-medium " +
+                          (c.isPublished
+                            ? "bg-green-100 text-green-800"
+                            : "bg-slate-100 text-slate-700")
+                        }
+                      >
+                        {c.isPublished ? "Published" : "Draft"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Link
+                        to={`/courses/${c.id}`}
+                        className="text-sm text-slate-600 hover:text-slate-900"
+                      >
+                        View
+                      </Link>
+                      <Link
+                        to={`/courses/${c.id}/edit`}
+                        className="text-sm text-primary-600 font-medium"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => onDelete(c.id)}
+                        className="text-sm text-red-600"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between mt-4">
-            <div className="muted">
+          <div className="flex items-center justify-between mt-6">
+            <div className="text-sm text-slate-500">
               Showing {(page - 1) * pageSize + 1}–
               {Math.min(page * pageSize, total)} of {total}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <select
                 value={pageSize}
                 onChange={(e) => setPageSize(Number(e.target.value))}
@@ -340,19 +356,19 @@ export default function CoursesList() {
                 <option value={12}>12 / page</option>
               </select>
 
-              <div className="pagination">
+              <div className="flex items-center gap-2">
                 <button
-                  className="btn-ghost"
+                  className="px-3 py-1 rounded-md border"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page <= 1}
                 >
                   Prev
                 </button>
-                <span className="muted px-2">
+                <span className="text-sm text-slate-500">
                   {page} / {totalPages}
                 </span>
                 <button
-                  className="btn-ghost"
+                  className="px-3 py-1 rounded-md border"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page >= totalPages}
                 >

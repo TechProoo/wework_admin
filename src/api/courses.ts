@@ -100,6 +100,26 @@ export const createLesson = async (courseId: string, payload: any) => {
   }
 };
 
+export const updateLesson = async (lessonId: string, payload: any) => {
+  try {
+    const res = await httpClient.patch(`/courses/lessons/${lessonId}`, payload);
+    return (res.data as any)?.data;
+  } catch (error: unknown) {
+    console.error("Failed to update lesson:", error);
+    throw new Error("Failed to update lesson");
+  }
+};
+
+export const deleteLesson = async (lessonId: string) => {
+  try {
+    const res = await httpClient.delete(`/courses/lessons/${lessonId}`);
+    return (res.data as any)?.data;
+  } catch (error: unknown) {
+    console.error("Failed to delete lesson:", error);
+    throw new Error("Failed to delete lesson");
+  }
+};
+
 export const publishCourse = async (courseId: string, isPublished: boolean) => {
   try {
     const res = await httpClient.patch(`/courses/${courseId}/publish`, {
@@ -119,5 +139,55 @@ export const importCourse = async (payload: any) => {
   } catch (error: unknown) {
     console.error("Failed to import course:", error);
     throw new Error("Failed to import course");
+  }
+};
+
+export const createQuiz = async (lessonId: string, payload: any) => {
+  try {
+    const res = await httpClient.post(
+      `/courses/lessons/${lessonId}/quiz`,
+      payload
+    );
+    return (res.data as any)?.data;
+  } catch (error: unknown) {
+    console.error("Failed to create quiz:", error);
+    throw new Error("Failed to create quiz");
+  }
+};
+
+export const updateQuiz = async (lessonId: string, payload: any) => {
+  try {
+    const res = await httpClient.patch(
+      `/courses/lessons/${lessonId}/quiz`,
+      payload
+    );
+    return (res.data as any)?.data;
+  } catch (error: unknown) {
+    console.error("Failed to update quiz:", error);
+    throw new Error("Failed to update quiz");
+  }
+};
+
+export const deleteQuiz = async (lessonId: string) => {
+  try {
+    const res = await httpClient.delete(`/courses/lessons/${lessonId}/quiz`);
+    return (res.data as any)?.data;
+  } catch (error: unknown) {
+    console.error("Failed to delete quiz:", error);
+    throw new Error("Failed to delete quiz");
+  }
+};
+
+export const uploadThumbnail = async (courseId: string, file: File) => {
+  try {
+    const fd = new FormData();
+    fd.append("file", file, file.name);
+    const res = await httpClient.post(`/courses/${courseId}/thumbnail`, fd, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return (res.data as any)?.data;
+  } catch (error: unknown) {
+    console.error("Failed to upload thumbnail:", error);
+    throw new Error("Failed to upload thumbnail");
   }
 };

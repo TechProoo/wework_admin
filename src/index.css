@@ -324,25 +324,6 @@ button:focus-visible {
 }
 
 /* Course create responsive grid and preview styling */
-.create-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .create-grid {
-    grid-template-columns: 2fr 1fr; /* form + preview */
-    align-items: start;
-  }
-}
-
-@media (min-width: 1200px) {
-  .create-grid {
-    grid-template-columns: 3fr 1fr; /* wider form on large screens */
-    gap: 28px;
-  }
-}
 
 .preview-aside {
   position: sticky;

@@ -56,7 +56,7 @@ export default function CourseCreate() {
         </div>
       </div>
 
-      <div className="create-grid">
+      <div className="w-[1]">
         <div className="create-form">
           <CourseForm
             initial={initialFromState ?? undefined}

@@ -13,16 +13,6 @@ export interface Lesson {
   updatedAt: string; // ISO date string
 }
 
-export interface Tutorial {
-  id: string;
-  courseId: string;
-  title: string;
-  content: string;
-  videoUrl: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface Course {
   id: string;
   title: string;
@@ -38,7 +28,6 @@ export interface Course {
   createdAt: string;
   updatedAt: string;
   lessons: Lesson[];
-  tutorial: Tutorial;
 }
 
 export interface CoursesResponse {
