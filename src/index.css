@@ -1029,7 +1029,7 @@ button:focus-visible {
   .ql-container {
     font-size: 15px;
   }
-  
+
   .ql-editor {
     padding: 12px;
   }
@@ -1041,7 +1041,8 @@ button:focus-visible {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -1078,7 +1079,7 @@ html {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-}/* comic-button (platform brand button style mirrored from main site) */
+} /* comic-button (platform brand button style mirrored from main site) */
 .comic-button {
   padding: 6px 14px;
   font-size: 15px;
