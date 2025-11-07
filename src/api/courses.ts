@@ -191,3 +191,238 @@ export const uploadThumbnail = async (courseId: string, file: File) => {
     throw new Error("Failed to upload thumbnail");
   }
 };
+
+/**
+ * Converts a base64 data URL to a File object
+ */
+const dataUrlToFile = (dataUrl: string, filename: string): File => {
+  const arr = dataUrl.split(",");
+  const mimeMatch = arr[0].match(/:(.*?);/);
+  const mime = mimeMatch ? mimeMatch[1] : "image/png";
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+};
+
+/**
+ * Orchestrates the full course update process including:
+ * - Metadata update with optional thumbnail upload
+ * - Lesson synchronization (create, update, delete)
+ * - Quiz synchronization per lesson
+ * 
+ * @param courseId - The ID of the course to update
+ * @param payload - The complete course payload with lessons and quizzes
+ * @param initial - The initial course data for comparison
+ * @param onProgress - Optional callback for progress updates
+ */
+export const updateCourseWithLessons = async (
+  courseId: string,
+  payload: any,
+  initial: any,
+  onProgress?: (step: string, status: "pending" | "done" | "failed", message?: string) => void
+) => {
+  try {
+    // Step 1: Update course metadata
+    onProgress?.("meta", "pending", "Saving metadata…");
+    
+    const metadata = {
+      title: payload.title,
+      category: payload.category,
+      level: payload.level,
+      duration: payload.duration,
+      students: payload.students,
+      rating: payload.rating,
+      price: payload.price,
+      thumbnail: payload.thumbnail,
+      description: payload.description,
+      isPublished: payload.isPublished,
+    };
+
+    // Handle thumbnail upload if it's a base64 data URL
+    if (metadata.thumbnail && String(metadata.thumbnail).startsWith("data:")) {
+      try {
+        const file = dataUrlToFile(
+          String(metadata.thumbnail),
+          `thumb-${Date.now()}.png`
+        );
+        const uploaded = await uploadThumbnail(courseId, file);
+        const newThumb =
+          uploaded?.thumbnail ??
+          uploaded?.data?.thumbnail ??
+          uploaded?.secure_url ??
+          uploaded;
+        if (newThumb) metadata.thumbnail = newThumb;
+      } catch (upErr: any) {
+        console.warn("Thumbnail upload failed, using original URL", upErr);
+      }
+    }
+
+    await updateCourse(courseId, metadata);
+    onProgress?.("meta", "done", "Metadata saved");
+
+    // Step 2: Synchronize lessons
+    onProgress?.("lessons", "pending", "Syncing lessons…");
+    
+    const initialLessonMap = new Map(
+      (initial?.lessons || []).map((l: any) => [l.id, l])
+    );
+    const payloadLessons = payload.lessons || [];
+    const payloadIds = new Set(payloadLessons.map((l: any) => l.id));
+
+    // Update or create lessons and sync their quizzes
+    for (const lesson of payloadLessons) {
+      const lessonPayload = {
+        title: lesson.title,
+        order: lesson.order,
+        duration: lesson.duration,
+        isPreview: lesson.isPreview,
+        content: lesson.content,
+        videoUrl: lesson.videoUrl,
+      };
+
+      let lessonIdToUse = lesson.id;
+
+      // Update existing or create new lesson
+      if (initialLessonMap.has(lesson.id)) {
+        await updateLesson(lesson.id, lessonPayload);
+      } else {
+        const created = await createLesson(courseId, lessonPayload);
+        lessonIdToUse = created?.id ?? lessonIdToUse;
+      }
+
+      // Sync quiz for this lesson
+      const initialLesson = initialLessonMap.get(lesson.id) as any;
+      const hasInitialQuiz = !!(initialLesson && initialLesson.quizId);
+
+      if (lesson.quiz) {
+        // Create or update quiz
+        if (hasInitialQuiz) {
+          await updateQuiz(lessonIdToUse, lesson.quiz);
+        } else {
+          await createQuiz(lessonIdToUse, lesson.quiz);
+        }
+      } else if (hasInitialQuiz) {
+        // Delete quiz if it was removed
+        await deleteQuiz(lessonIdToUse);
+      }
+    }
+
+    // Delete removed lessons and their quizzes
+    for (const oldLesson of initial?.lessons || []) {
+      if (!payloadIds.has(oldLesson.id)) {
+        if (oldLesson.quizId) {
+          try {
+            await deleteQuiz(oldLesson.id);
+          } catch (err) {
+            console.warn(`Failed to delete quiz for lesson ${oldLesson.id}`, err);
+          }
+        }
+        await deleteLesson(oldLesson.id);
+      }
+    }
+
+    onProgress?.("lessons", "done", "Lessons synced");
+
+    return { success: true };
+  } catch (error: unknown) {
+    console.error("Course update orchestration failed:", error);
+    onProgress?.("meta", "failed", "Update failed");
+    throw error;
+  }
+};
+
+/**
+ * Creates a new course with lessons and quizzes
+ * 
+ * @param payload - The complete course payload with lessons and quizzes
+ * @param onProgress - Optional callback for progress updates
+ * @returns The created course with ID
+ */
+export const createCourseWithLessons = async (
+  payload: any,
+  onProgress?: (step: string, status: "pending" | "done" | "failed", message?: string) => void
+) => {
+  try {
+    onProgress?.("course", "pending", "Creating course…");
+
+    // Create the course with metadata only first
+    const courseData = {
+      title: payload.title,
+      category: payload.category,
+      level: payload.level,
+      duration: payload.duration,
+      students: payload.students,
+      rating: payload.rating,
+      price: payload.price,
+      thumbnail: payload.thumbnail,
+      description: payload.description,
+      isPublished: payload.isPublished,
+    };
+
+    const created = await createCourse(courseData);
+    const courseId = created?.id;
+
+    if (!courseId) {
+      throw new Error("Failed to get course ID from creation response");
+    }
+
+    onProgress?.("course", "done", "Course created");
+
+    // Handle thumbnail upload if it's a base64 data URL
+    if (payload.thumbnail && String(payload.thumbnail).startsWith("data:")) {
+      try {
+        const file = dataUrlToFile(
+          String(payload.thumbnail),
+          `thumb-${Date.now()}.png`
+        );
+        const uploaded = await uploadThumbnail(courseId, file);
+        const newThumb =
+          uploaded?.thumbnail ??
+          uploaded?.data?.thumbnail ??
+          uploaded?.secure_url ??
+          uploaded;
+        if (newThumb) {
+          await updateCourse(courseId, { thumbnail: newThumb });
+        }
+      } catch (upErr: any) {
+        console.warn("Thumbnail upload failed, using original URL", upErr);
+      }
+    }
+
+    // Create lessons if provided
+    if (payload.lessons && payload.lessons.length > 0) {
+      onProgress?.("lessons", "pending", "Creating lessons…");
+
+      for (const lesson of payload.lessons) {
+        const lessonPayload = {
+          title: lesson.title,
+          order: lesson.order,
+          duration: lesson.duration,
+          isPreview: lesson.isPreview,
+          content: lesson.content,
+          videoUrl: lesson.videoUrl,
+        };
+
+        const createdLesson = await createLesson(courseId, lessonPayload);
+        const lessonId = createdLesson?.id;
+
+        // Create quiz for this lesson if provided
+        if (lesson.quiz && lessonId) {
+          await createQuiz(lessonId, lesson.quiz);
+        }
+      }
+
+      onProgress?.("lessons", "done", "Lessons created");
+    }
+
+    return { ...created, id: courseId };
+  } catch (error: unknown) {
+    console.error("Course creation orchestration failed:", error);
+    onProgress?.("course", "failed", "Creation failed");
+    throw error;
+  }
+};

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import LessonForm from "../components/LessonForm";
 
 type Question = { id: string; text: string; options: string[]; answer: string };
@@ -44,6 +45,7 @@ export default function CourseForm({
   hideSubmit = false,
   onSuccess,
 }: Props) {
+  const navigate = useNavigate();
   const [title, setTitle] = useState(initial.title ?? "");
   const [category, setCategory] = useState(initial.category ?? "");
   const [level, setLevel] = useState(initial.level ?? "BEGINNER");
@@ -176,11 +178,20 @@ export default function CourseForm({
     //   videoUrl: tutorialVideo,
     // },
     lessons: lessons.map((l) => ({
+      id: l.id,
       title: l.title,
+      order: l.order,
       duration: l.duration,
       isPreview: l.isPreview,
+      content: l.content,
+      videoUrl: l.videoUrl,
+      quiz: l.quiz,
     })),
   });
+
+  const handlePreview = () => {
+    navigate('/courses/preview', { state: { course: buildPayload() } });
+  };
 
   // call onChange when form fields change
   useEffect(() => {
@@ -387,6 +398,14 @@ export default function CourseForm({
 
       {!hideSubmit && (
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handlePreview}
+            className="btn-ghost"
+          >
+            Preview Course
+          </button>
+          
           <button
             type="submit"
             disabled={submitting}

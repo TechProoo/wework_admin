@@ -6,6 +6,7 @@ import CoursesList from "./pages/CoursesList";
 import CourseCreate from "./pages/CourseCreate";
 import CourseEdit from "./pages/CourseEdit";
 import CourseDetail from "./pages/CourseDetail";
+import CoursePreview from "./pages/CoursePreview";
 import Overview from "./pages/Overview";
 import UsersList from "./pages/UsersList";
 import UserDetail from "./pages/UserDetail";
@@ -34,6 +35,7 @@ export default function App() {
                 <Route path="/courses/new" element={<CourseCreate />} />
                 <Route path="/courses/:id/edit" element={<CourseEdit />} />
                 <Route path="/courses/:id" element={<CourseDetail />} />
+                <Route path="/courses/preview" element={<CoursePreview />} />
                 <Route path="/users" element={<UsersList />} />
                 <Route path="/users/:id" element={<UserDetail />} />
                 <Route path="/companies" element={<CompaniesList />} />

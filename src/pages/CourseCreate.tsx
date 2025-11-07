@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import CourseForm from "./CourseForm";
 import PreviewConfirmModal from "../components/PreviewConfirmModal";
+import { createCourseWithLessons } from "../api/courses";
 
 export default function CourseCreate() {
   const navigate = useNavigate();
@@ -10,40 +11,44 @@ export default function CourseCreate() {
 
   const [preview, setPreview] = useState<any>(initialFromState ?? null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (payload: any, token?: string) => {
-    const base = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
-    const res = await fetch(`${base}/courses`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token
-          ? {
-              Authorization: token.startsWith("Bearer")
-                ? token
-                : `Bearer ${token}`,
-            }
-          : {}),
-      },
-      body: JSON.stringify(payload),
-      credentials: "include",
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Create failed: ${res.status} ${text}`);
+  const handleSubmit = async (payload: any) => {
+    setCreating(true);
+    setError(null);
+
+    try {
+      const result = await createCourseWithLessons(payload);
+      const courseId = result?.id;
+
+      if (courseId) {
+        navigate(`/courses/${courseId}`);
+      } else {
+        throw new Error("Course created but no ID returned");
+      }
+
+      return result;
+    } catch (err: any) {
+      const message = err?.message || String(err);
+      setError(message);
+      throw new Error(message);
+    } finally {
+      setCreating(false);
     }
-    const body = await res.json();
-    const id = body?.data?.id ?? body?.id ?? null;
-    if (id) {
-      navigate(`/courses/${id}`);
-    }
-    return body;
   };
 
-  useEffect(() => {
-    // small visual hydration: if preview empty, set defaults
+  const handleConfirm = async () => {
     if (!preview) return;
-  }, [preview]);
+
+    try {
+      await handleSubmit(preview);
+      setPreviewOpen(false);
+    } catch (err: any) {
+      // Error is already set in handleSubmit
+      alert(err?.message || String(err));
+    }
+  };
 
   return (
     <div>
@@ -55,6 +60,12 @@ export default function CourseCreate() {
           </div>
         </div>
       </div>
+
+      {error && (
+        <div className="card p-3 mb-4 text-sm" style={{ background: "#ffecec" }}>
+          {error}
+        </div>
+      )}
 
       <div className="w-[1]">
         <div className="">
@@ -71,31 +82,26 @@ export default function CourseCreate() {
               className="btn-ghost"
               onClick={() => navigate("/courses")}
               type="button"
+              disabled={creating}
             >
               Cancel
             </button>
             <button
               className="comic-button"
               onClick={() => setPreviewOpen(true)}
-              disabled={!preview}
+              disabled={!preview || creating}
             >
-              Preview & Confirm
+              {creating ? "Creating…" : "Preview & Confirm"}
             </button>
           </div>
         </div>
       </div>
+
       <PreviewConfirmModal
         open={previewOpen}
         payload={preview}
         onClose={() => setPreviewOpen(false)}
-        onConfirm={async () => {
-          try {
-            if (!preview) return;
-            await handleSubmit(preview);
-          } catch (err: any) {
-            alert(err?.message || String(err));
-          }
-        }}
+        onConfirm={handleConfirm}
       />
     </div>
   );
