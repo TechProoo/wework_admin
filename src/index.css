@@ -1333,3 +1333,131 @@ html {
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
 }
+
+/* Responsive Text Editor (React Quill) Styles */
+.responsive-quill-wrapper {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.responsive-quill .ql-container {
+  min-height: 300px;
+  font-size: 15px;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.responsive-quill .ql-toolbar {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.responsive-quill .ql-editor {
+  padding: 16px;
+  line-height: 1.6;
+}
+
+/* Mobile responsive adjustments for text editor */
+@media (max-width: 768px) {
+  .responsive-quill-wrapper {
+    margin-bottom: 40px;
+  }
+
+  .responsive-quill .ql-container {
+    min-height: 250px;
+    font-size: 14px;
+  }
+
+  .responsive-quill .ql-editor {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  /* Make toolbar more compact on mobile */
+  .responsive-quill .ql-toolbar {
+    padding: 8px;
+  }
+
+  .responsive-quill .ql-toolbar button {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+  }
+
+  .responsive-quill .ql-toolbar .ql-picker-label {
+    padding: 4px 6px;
+    font-size: 13px;
+  }
+
+  .responsive-quill .ql-toolbar .ql-stroke {
+    stroke-width: 2;
+  }
+
+  /* Improve touch targets */
+  .responsive-quill .ql-toolbar button,
+  .responsive-quill .ql-toolbar .ql-picker-label {
+    min-height: 36px;
+    min-width: 36px;
+  }
+
+  /* Make dropdown menus mobile-friendly */
+  .responsive-quill .ql-picker-options {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .responsive-quill .ql-picker.ql-expanded .ql-picker-options {
+    z-index: 100;
+  }
+}
+
+/* Extra small devices (landscape phones, less than 640px) */
+@media (max-width: 640px) {
+  .responsive-quill .ql-container {
+    min-height: 200px;
+  }
+
+  .responsive-quill .ql-toolbar {
+    padding: 6px;
+  }
+
+  .responsive-quill .ql-toolbar button {
+    width: 28px;
+    height: 28px;
+    padding: 3px;
+  }
+
+  .responsive-quill .ql-editor {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* Hide less essential toolbar buttons on very small screens */
+  .responsive-quill .ql-toolbar .ql-script,
+  .responsive-quill .ql-toolbar .ql-code-block {
+    display: none;
+  }
+}
+
+/* Improve text editor accessibility and UX */
+.responsive-quill .ql-editor.ql-blank::before {
+  color: #9ca3af;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.responsive-quill .ql-editor:focus {
+  outline: 2px solid rgba(100, 119, 106, 0.3);
+  outline-offset: -2px;
+}
+
+/* Better placeholder visibility on mobile */
+@media (max-width: 768px) {
+  .responsive-quill .ql-editor.ql-blank::before {
+    font-size: 14px;
+    left: 12px;
+    right: 12px;
+  }
+}
