@@ -212,7 +212,7 @@ export default function UsersList() {
                 <div className="p-4 md:p-6">
                   {/* User Avatar and Info */}
                   <div className="flex items-start gap-3 md:gap-4 mb-4">
-                    <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg md:text-xl">
+                    <div className="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-linear-to-br from-primary to-accent flex items-center justify-center text-gray-900 font-bold text-lg md:text-xl">
                       {user.firstName?.[0]}
                       {user.lastName?.[0]}
                     </div>

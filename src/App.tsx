@@ -24,29 +24,31 @@ export default function App() {
   return (
     <BrowserRouter>
       <NewCourseProvider>
-        <div className="min-h-screen w-full flex flex-col">
-          <AdminNavbar />
+        <div>
+          <div className="min-h-screen w-full md:px-20">
+            <AdminNavbar />
 
-          <div className="mt-10 flex-1">
-            <main className="">
-              <Routes>
-                <Route path="/" element={<Overview />} />
-                <Route path="/courses" element={<CoursesList />} />
-                <Route path="/courses/new" element={<CourseCreate />} />
-                <Route path="/courses/:id/edit" element={<CourseEdit />} />
-                <Route path="/courses/:id" element={<CourseDetail />} />
-                <Route path="/courses/preview" element={<CoursePreview />} />
-                <Route path="/users" element={<UsersList />} />
-                <Route path="/users/:id" element={<UserDetail />} />
-                <Route path="/companies" element={<CompaniesList />} />
-                <Route path="/companies/:id" element={<CompanyDetail />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/settings" element={<Settings />} />
-              </Routes>
-            </main>
+            <div className="mt-15 w-full">
+              <main className="">
+                <Routes>
+                  <Route path="/" element={<Overview />} />
+                  <Route path="/courses" element={<CoursesList />} />
+                  <Route path="/courses/new" element={<CourseCreate />} />
+                  <Route path="/courses/:id/edit" element={<CourseEdit />} />
+                  <Route path="/courses/:id" element={<CourseDetail />} />
+                  <Route path="/courses/preview" element={<CoursePreview />} />
+                  <Route path="/users" element={<UsersList />} />
+                  <Route path="/users/:id" element={<UserDetail />} />
+                  <Route path="/companies" element={<CompaniesList />} />
+                  <Route path="/companies/:id" element={<CompanyDetail />} />
+                  <Route path="/categories" element={<Categories />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Routes>
+              </main>
+            </div>
+
           </div>
-
-          <AdminFooter />
+            <AdminFooter />
         </div>
       </NewCourseProvider>
     </BrowserRouter>

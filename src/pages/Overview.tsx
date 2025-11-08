@@ -537,7 +537,7 @@ function CourseItemRow({ course }: { course: any }) {
       to={`/courses/${course.id}`}
       className="flex items-center gap-2 md:gap-3 p-2 md:p-3 hover:bg-gray-50 rounded-lg transition-colors group"
     >
-      <div className="shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg g-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-sm">
+      <div className="shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg g-linear-to-br from-primary to-accent flex items-center justify-center text-gray-900 font-bold text-sm md:text-lg shadow-sm">
         {course.title ? course.title.charAt(0).toUpperCase() : "C"}
       </div>
       <div className="flex-1 min-w-0">
@@ -582,7 +582,7 @@ function UserItemRow({ user }: { user: any }) {
       to={`/users/${user.id}`}
       className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 hover:bg-blue-50 rounded-lg transition-colors group"
     >
-      <div className="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full g-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
+      <div className="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full g-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center text-gray-900 font-semibold text-xs md:text-sm shadow-sm">
         {user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"}
       </div>
       <div className="flex-1 min-w-0">
@@ -616,7 +616,7 @@ function CompanyItemRow({ company }: { company: any }) {
       to={`/companies/${company.id}`}
       className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 hover:bg-purple-50 rounded-lg transition-colors group"
     >
-      <div className="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg g-linear-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
+      <div className="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg g-linear-to-br from-purple-500 to-purple-600 flex items-center justify-center text-gray-900 font-semibold text-xs md:text-sm shadow-sm">
         {company.name ? company.name.charAt(0).toUpperCase() : "C"}
       </div>
       <div className="flex-1 min-w-0">
