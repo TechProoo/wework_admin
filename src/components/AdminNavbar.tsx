@@ -71,7 +71,7 @@ export default function AdminNavbar() {
           <div className="flex items-center gap-3 md:gap-6">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-linear-to-br from-primary to-accent flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                 <span className="text-white font-black text-sm md:text-lg">
                   W
                 </span>
@@ -94,7 +94,7 @@ export default function AdminNavbar() {
                   to={link.to}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all ${
                     isActive(link.to)
-                      ? "bg-gradient-to-r from-primary to-accent text-white shadow-sm"
+                      ? "bg-linear-to-r from-primary to-accent text-white shadow-sm"
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   }`}
                 >
@@ -165,7 +165,7 @@ export default function AdminNavbar() {
             {/* New Course */}
             <button
               onClick={() => newCourseOpen?.open()}
-              className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg text-sm font-semibold hover:shadow-md transition-all"
+              className="hidden md:flex items-center gap-2 px-4 py-2 bg-linear-to-r from-primary to-accent text-white rounded-lg text-sm font-semibold hover:shadow-md transition-all"
             >
               <svg
                 className="w-4 h-4"
@@ -186,7 +186,7 @@ export default function AdminNavbar() {
             {/* Mobile New Course */}
             <button
               onClick={() => newCourseOpen?.open()}
-              className="md:hidden bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-md transition-all"
+              className="md:hidden bg-linear-to-r from-primary to-accent text-white rounded-lg hover:shadow-md transition-all"
               aria-label="New Course"
             >
               <svg
@@ -211,7 +211,7 @@ export default function AdminNavbar() {
                 className="flex items-center gap-2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-expanded={menuOpen}
               >
-                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
                   A
                 </div>
                 <svg
@@ -329,7 +329,7 @@ export default function AdminNavbar() {
                   to={link.to}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all ${
                     isActive(link.to)
-                      ? "bg-gradient-to-r from-primary to-accent text-white shadow-sm"
+                      ? "bg-linear-to-r from-primary to-accent text-white shadow-sm"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
                   onClick={() => setMobileOpen(false)}

@@ -40,7 +40,7 @@ export default function CourseDetail() {
   if (!id) return <div className="p-4 md:p-6">Invalid course id</div>;
 
   return (
-    <div className="p-3 md:p-6 md:scale-[0] m scale-[.8.95] ml-[-30px] md:[ml-0] max-w-7xl mx-auto">
+    <div className="p-3 md:p-10 m-10 md:scale-[1] scale-[.8.95] ml-[-30px] md:ml-0 mx-auto">
       {loading ? (
         <div className="space-y-3 md:space-y-6">
           {/* Header Skeleton */}
@@ -85,7 +85,7 @@ export default function CourseDetail() {
           </Link>
         </div>
       ) : course ? (
-        <div className="space-y-3 md:space-y-6">
+        <div className="space-y-3 md:space-y-6 mt-10">
           {/* Breadcrumb & Actions */}
           <div className="flex flex-col gap-2 md:gap-3">
             <div className="flex items-center gap-1.5 text-xs md:text-sm text-gray-600 overflow-x-auto">
@@ -96,7 +96,7 @@ export default function CourseDetail() {
                 Courses
               </Link>
               <svg
-                className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0"
+                className="w-3 h-3 md:w-4 md:h-4 shrink-0"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -140,7 +140,7 @@ export default function CourseDetail() {
           <div className="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
             <div className=" p-0 md:p-6 space-y-3 md:space-y-4">
               {/* Thumbnail */}
-              <div className="w-full rounded-lg overflow-hidden relative bg-gradient-to-br from-primary to-accent group">
+              <div className="w-full rounded-lg overflow-hidden relative bg-linear-to-br from-primary to-accent group">
                 <div className="w-full h-40 sm:h-48 md:h-56 lg:h-64 xl:h-80">
                   {course.thumbnail ? (
                     <img
@@ -152,14 +152,16 @@ export default function CourseDetail() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-primary/30 text-white">
                       <span className="text-3xl text-wrap sm:text-4xl md:text-5xl lg:text-6xl font-extrabold select-none">
-                        {course.title ? course.title.charAt(0).toUpperCase() : "C"}
+                        {course.title
+                          ? course.title.charAt(0).toUpperCase()
+                          : "C"}
                       </span>
                     </div>
                   )}
                 </div>
 
                 {/* Responsive overlay: shows title/category and status badge; moves to bottom on small screens */}
-                <div className="absolute inset-x-0 bottom-0 md:bottom-4 px-3 md:px-6 py-2 md:py-3 bg-gradient-to-t from-black/50 via-transparent to-transparent text-white backdrop-blur-sm">
+                <div className="absolute inset-x-0 bottom-0 md:bottom-4 px-3 md:px-6 py-2 md:py-3 bg-linear-to-t from-black/50 via-transparent to-transparent text-white backdrop-blur-sm">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
                       <div className="text-sm md:text-base font-semibold truncate">
@@ -170,10 +172,12 @@ export default function CourseDetail() {
                       </div>
                     </div>
 
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                       <span
                         className={`inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold shadow-lg ${
-                          course.isPublished ? "bg-green-500 text-white" : "bg-gray-700 text-white"
+                          course.isPublished
+                            ? "bg-green-500 text-white"
+                            : "bg-gray-700 text-white"
                         }`}
                       >
                         {course.isPublished ? "✓ Published" : "Draft"}
@@ -204,7 +208,7 @@ export default function CourseDetail() {
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 gap-2 md:gap-3">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-2.5 md:p-3 border border-blue-200">
+                  <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-lg p-2.5 md:p-3 border border-blue-200">
                     <div className="text-[10px] md:text-xs font-medium text-blue-600 uppercase mb-0.5 md:mb-1">
                       Duration
                     </div>
@@ -212,7 +216,7 @@ export default function CourseDetail() {
                       {formatDuration(course.duration)}
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-2.5 md:p-3 border border-purple-200">
+                  <div className="bg-linear-to-br from-purple-50 to-purple-100 rounded-lg p-2.5 md:p-3 border border-purple-200">
                     <div className="text-[10px] md:text-xs font-medium text-purple-600 uppercase mb-0.5 md:mb-1">
                       Students
                     </div>
@@ -220,7 +224,7 @@ export default function CourseDetail() {
                       {course.students || 0}
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-2.5 md:p-3 border border-amber-200">
+                  <div className="bg-linear-to-br from-amber-50 to-amber-100 rounded-lg p-2.5 md:p-3 border border-amber-200">
                     <div className="text-[10px] md:text-xs font-medium text-amber-600 uppercase mb-0.5 md:mb-1">
                       Rating
                     </div>
@@ -228,7 +232,7 @@ export default function CourseDetail() {
                       {course.rating ?? 0} ★
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-2.5 md:p-3 border border-green-200">
+                  <div className="bg-linear-to-br from-green-50 to-green-100 rounded-lg p-2.5 md:p-3 border border-green-200">
                     <div className="text-[10px] md:text-xs font-medium text-green-600 uppercase mb-0.5 md:mb-1">
                       Price
                     </div>
@@ -257,7 +261,7 @@ export default function CourseDetail() {
           <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-3 md:p-6">
             <div className="flex flex-col gap-2 mb-3 md:mb-6">
               <div className="flex items-center gap-2 md:gap-3">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                   <svg
                     className="w-4 h-4 md:w-6 md:h-6 text-primary"
                     fill="none"
@@ -341,7 +345,7 @@ export default function CourseDetail() {
                     >
                       <div className="flex items-start gap-2 md:gap-4">
                         {/* Lesson Number */}
-                        <div className="flex-shrink-0 w-7 h-7 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xs md:text-base shadow-sm">
+                        <div className=" w-7 h-7 md:w-10 md:h-10 rounded-full bg-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-xs md:text-base shadow-sm">
                           {index + 1}
                         </div>
 

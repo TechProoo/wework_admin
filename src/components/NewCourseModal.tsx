@@ -258,7 +258,7 @@ export default function NewCourseModal({
                 Cancel
               </button>
               <button
-                className="px-5 py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-white font-medium shadow-sm hover:shadow-md transition-all"
+                className="px-5 py-2 rounded-lg bg-linear-to-r from-primary to-accent text-white font-medium shadow-sm hover:shadow-md transition-all"
                 onClick={onContinue}
                 type="button"
               >

@@ -116,7 +116,7 @@ export default function Overview() {
       <header className="mb-4 md:mb-8">
         <div className="flex flex-col gap-3 md:gap-4">
           <div>
-            <h1 className="text-xl md:text-3xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent leading-tight">
+            <h1 className="text-xl md:text-3xl font-extrabold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent leading-tight">
               Admin Dashboard
             </h1>
             <p className="text-xs md:text-sm text-gray-600 mt-1">
@@ -126,7 +126,7 @@ export default function Overview() {
 
           <button
             onClick={() => newCourse?.open()}
-            className="flex items-center justify-center gap-2 px-4 py-2.5 md:py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all text-sm md:text-base w-full md:w-auto md:self-start"
+            className="flex items-center justify-center gap-2 px-4 py-2.5 md:py-3 bg-linear-to-r from-primary to-accent text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all text-sm md:text-base w-full md:w-auto md:self-start"
           >
             <svg
               className="w-4 h-4 md:w-5 md:h-5"
@@ -223,7 +223,7 @@ export default function Overview() {
         <Card className="lg:col-span-2">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg g-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                 <svg
                   className="w-4 h-4 md:w-5 md:h-5 text-primary"
                   fill="none"
@@ -312,7 +312,7 @@ export default function Overview() {
           <Card>
             <div className="flex items-center justify-between mb-3 md:mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center">
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg g-linear-to-br from-blue-100 to-blue-50 flex items-center justify-center">
                   <svg
                     className="w-4 h-4 md:w-5 md:h-5 text-blue-600"
                     fill="none"
@@ -379,7 +379,7 @@ export default function Overview() {
           <Card>
             <div className="flex items-center justify-between mb-3 md:mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center">
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg g-linear-to-br from-purple-100 to-purple-50 flex items-center justify-center">
                   <svg
                     className="w-4 h-4 md:w-5 md:h-5 text-purple-600"
                     fill="none"
@@ -505,7 +505,7 @@ function MetricCard({
             </p>
           )}
         </div>
-        <div className="flex-shrink-0 ml-2 p-2 md:p-3 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl text-primary group-hover:scale-110 transition-transform duration-200">
+        <div className="shrink-0 ml-2 p-2 md:p-3 g-linear-to-br from-primary/10 to-accent/10 rounded-xl text-primary group-hover:scale-110 transition-transform duration-200">
           {icon}
         </div>
       </div>
@@ -537,7 +537,7 @@ function CourseItemRow({ course }: { course: any }) {
       to={`/courses/${course.id}`}
       className="flex items-center gap-2 md:gap-3 p-2 md:p-3 hover:bg-gray-50 rounded-lg transition-colors group"
     >
-      <div className="flex-shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-sm">
+      <div className="shrink-0 w-10 h-10 md:w-14 md:h-14 rounded-lg g-linear-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm md:text-lg shadow-sm">
         {course.title ? course.title.charAt(0).toUpperCase() : "C"}
       </div>
       <div className="flex-1 min-w-0">
@@ -560,7 +560,7 @@ function CourseItemRow({ course }: { course: any }) {
         </p>
       </div>
       <svg
-        className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0"
+        className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -582,7 +582,7 @@ function UserItemRow({ user }: { user: any }) {
       to={`/users/${user.id}`}
       className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 hover:bg-blue-50 rounded-lg transition-colors group"
     >
-      <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
+      <div className="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full g-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
         {user.firstName ? user.firstName.charAt(0).toUpperCase() : "U"}
       </div>
       <div className="flex-1 min-w-0">
@@ -594,7 +594,7 @@ function UserItemRow({ user }: { user: any }) {
         </p>
       </div>
       <svg
-        className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+        className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -616,7 +616,7 @@ function CompanyItemRow({ company }: { company: any }) {
       to={`/companies/${company.id}`}
       className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 hover:bg-purple-50 rounded-lg transition-colors group"
     >
-      <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
+      <div className="shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-lg g-linear-to-br from-purple-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs md:text-sm shadow-sm">
         {company.name ? company.name.charAt(0).toUpperCase() : "C"}
       </div>
       <div className="flex-1 min-w-0">
@@ -628,7 +628,7 @@ function CompanyItemRow({ company }: { company: any }) {
         </p>
       </div>
       <svg
-        className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+        className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-0.5 transition-all shrink-0"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

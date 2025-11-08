@@ -47,8 +47,18 @@ export default function CoursePreview() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-md">
-          <svg className="w-16 h-16 md:w-20 md:h-20 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className="w-16 h-16 md:w-20 md:h-20 text-gray-300 mx-auto mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
             No course data found
@@ -56,7 +66,10 @@ export default function CoursePreview() {
           <p className="text-sm md:text-base text-gray-600 mb-4">
             Please navigate from the course creation page.
           </p>
-          <button onClick={() => navigate(-1)} className="btn text-sm md:text-base">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn text-sm md:text-base"
+          >
             Go Back
           </button>
         </div>
@@ -70,43 +83,64 @@ export default function CoursePreview() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b sticky top-0 z-20 shadow-sm">
+      <div className="bg-white border-b sticky top-0 z-20 shadow-sm mt-15">
         <div className="max-w-7xl mx-auto px-3 md:px-6 py-2.5 md:py-4">
           <div className="flex items-center justify-between gap-2 md:gap-4">
             <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
-              <button 
-                onClick={() => navigate(-1)} 
+              <button
+                onClick={() => navigate(-1)}
                 className="p-1.5 md:p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-label="Go back"
               >
-                <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <svg
+                  className="w-5 h-5 md:w-6 md:h-6 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
                 </svg>
               </button>
-              
+
               <div className="min-w-0 flex-1">
                 <h1 className="text-sm md:text-xl font-bold text-gray-900 truncate">
                   {course.title}
                 </h1>
                 <p className="text-xs text-gray-500 truncate hidden sm:block">
-                  {course.category} • {course.level} • {sortedLessons.length} Lessons
+                  {course.category} • {course.level} • {sortedLessons.length}{" "}
+                  Lessons
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <div className="text-xs md:text-sm text-primary bg-primary/10 px-2 md:px-3 py-1 md:py-1.5 rounded-lg font-semibold whitespace-nowrap">
                 📖 Preview
               </div>
-              
+
               {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-label="Toggle lesson menu"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               </button>
             </div>
@@ -116,25 +150,41 @@ export default function CoursePreview() {
 
       <div className="max-w-7xl mx-auto flex relative">
         {/* Sidebar - Lesson Navigation */}
-        <aside className={`
+        <aside
+          className={`
           fixed md:sticky top-0 left-0 h-full md:h-auto
           w-72 md:w-80 bg-white border-r
           md:top-[57px] md:self-start
           transition-transform duration-300 ease-in-out
           z-30 md:z-0
-          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        `}>
+          ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+          }
+        `}
+        >
           {/* Sidebar Header */}
-          <div className="p-3 md:p-4 border-b bg-gradient-to-r from-primary/5 to-accent/5">
+          <div className="p-3 md:p-4 border-b bg-linear-to-r from-primary/5 to-accent/5">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="font-bold text-gray-900 text-sm md:text-base">Course Content</h2>
+              <h2 className="font-bold text-gray-900 text-sm md:text-base">
+                Course Content
+              </h2>
               <button
                 onClick={() => setSidebarOpen(false)}
                 className="md:hidden p-1 hover:bg-gray-100 rounded transition-colors"
                 aria-label="Close menu"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -146,7 +196,7 @@ export default function CoursePreview() {
           {/* Lessons List */}
           <nav
             className="overflow-y-auto"
-            style={{ maxHeight: 'calc(100vh - 120px)' }}
+            style={{ maxHeight: "calc(100vh - 120px)" }}
           >
             {sortedLessons.map((lesson, index) => (
               <button
@@ -157,15 +207,15 @@ export default function CoursePreview() {
                 }}
                 className={`w-full text-left p-3 md:p-4 border-b transition-all ${
                   selectedLessonIndex === index
-                    ? "bg-gradient-to-r from-primary/10 to-accent/10 border-l-4 border-l-primary shadow-inner"
+                    ? "bg-linear-to-r from-primary/10 to-accent/10 border-l-4 border-l-primary shadow-inner"
                     : "hover:bg-gray-50 border-l-4 border-l-transparent"
                 }`}
               >
                 <div className="flex items-start gap-2 md:gap-3">
                   <div
-                    className={`flex-shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all ${
+                    className={`shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all ${
                       selectedLessonIndex === index
-                        ? "bg-gradient-to-br from-primary to-accent text-white shadow-md"
+                        ? "bg-linear-to-br from-primary to-accent text-white shadow-md"
                         : "bg-gray-200 text-gray-600"
                     }`}
                   >
@@ -183,14 +233,28 @@ export default function CoursePreview() {
                     </h3>
                     <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mt-1 text-[10px] md:text-xs text-gray-500">
                       <span className="flex items-center gap-0.5">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
                         </svg>
                         {lesson.duration}m
                       </span>
                       {lesson.videoUrl && (
                         <span className="flex items-center gap-0.5 text-purple-600">
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <svg
+                            className="w-3 h-3"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
                             <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                           </svg>
                           Video
@@ -198,9 +262,17 @@ export default function CoursePreview() {
                       )}
                       {lesson.quiz && (
                         <span className="flex items-center gap-0.5 text-amber-600">
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <svg
+                            className="w-3 h-3"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                            <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                            <path
+                              fillRule="evenodd"
+                              d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                           Quiz
                         </span>
@@ -227,14 +299,20 @@ export default function CoursePreview() {
             {/* Lesson Header */}
             <div className="mb-4 md:mb-8">
               <div className="flex flex-wrap items-center gap-1.5 md:gap-2 text-xs md:text-sm text-gray-500 mb-2">
-                <span className="font-medium">Lesson {selectedLessonIndex + 1}</span>
+                <span className="font-medium">
+                  Lesson {selectedLessonIndex + 1}
+                </span>
                 <span>•</span>
                 <span>{currentLesson.duration} minutes</span>
                 {currentLesson.videoUrl && (
                   <>
                     <span>•</span>
                     <span className="text-purple-600 flex items-center gap-1">
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                       </svg>
                       Video
@@ -245,9 +323,17 @@ export default function CoursePreview() {
                   <>
                     <span>•</span>
                     <span className="text-amber-600 flex items-center gap-1">
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                        <path
+                          fillRule="evenodd"
+                          d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       Quiz
                     </span>
@@ -288,12 +374,20 @@ export default function CoursePreview() {
             {/* Quiz Section */}
             {currentLesson.quiz && currentLesson.quiz.questions.length > 0 && (
               <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t-2 border-gray-200">
-                <div className="mb-4 md:mb-6 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4 md:p-6">
+                <div className="mb-4 md:mb-6 bg-linear-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4 md:p-6">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
-                      <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-linear-to-br from-amber-400 to-orange-500 flex items-center justify-center">
+                      <svg
+                        className="w-5 h-5 md:w-6 md:h-6 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                        <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                        <path
+                          fillRule="evenodd"
+                          d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                     <div>
@@ -302,7 +396,10 @@ export default function CoursePreview() {
                       </h3>
                       <p className="text-xs md:text-sm text-gray-700">
                         Test your understanding with{" "}
-                        <span className="font-semibold">{currentLesson.quiz.questions.length}</span> question
+                        <span className="font-semibold">
+                          {currentLesson.quiz.questions.length}
+                        </span>{" "}
+                        question
                         {currentLesson.quiz.questions.length !== 1 ? "s" : ""}
                       </p>
                     </div>
@@ -337,7 +434,7 @@ export default function CoursePreview() {
                               }`}
                             >
                               <div
-                                className={`flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center font-bold text-xs md:text-sm ${
+                                className={`shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center font-bold text-xs md:text-sm ${
                                   isCorrect
                                     ? "bg-green-500 text-white"
                                     : "bg-gray-200 text-gray-600"
@@ -357,11 +454,21 @@ export default function CoursePreview() {
                                 </p>
                               </div>
                               {isCorrect && (
-                                <span className="flex-shrink-0 text-green-600 font-bold text-[10px] md:text-sm flex items-center gap-1">
-                                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                <span className="shrink-0 text-green-600 font-bold text-[10px] md:text-sm flex items-center gap-1">
+                                  <svg
+                                    className="w-4 h-4 md:w-5 md:h-5"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                      clipRule="evenodd"
+                                    />
                                   </svg>
-                                  <span className="hidden md:inline">Correct</span>
+                                  <span className="hidden md:inline">
+                                    Correct
+                                  </span>
                                 </span>
                               )}
                             </div>
@@ -384,29 +491,51 @@ export default function CoursePreview() {
                 disabled={selectedLessonIndex === 0}
                 className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-white border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-gray-300 transition-all text-xs md:text-sm"
               >
-                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-4 h-4 md:w-5 md:h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
                 <span className="hidden sm:inline">Previous</span>
               </button>
-              
+
               <div className="text-xs md:text-sm text-gray-600 font-medium">
-                <span className="font-bold text-primary">{selectedLessonIndex + 1}</span>
+                <span className="font-bold text-primary">
+                  {selectedLessonIndex + 1}
+                </span>
                 <span className="mx-1">/</span>
                 <span>{sortedLessons.length}</span>
               </div>
-              
+
               <button
                 onClick={() =>
                   selectedLessonIndex < sortedLessons.length - 1 &&
                   setSelectedLessonIndex(selectedLessonIndex + 1)
                 }
                 disabled={selectedLessonIndex === sortedLessons.length - 1}
-                className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-semibold hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none transition-all text-xs md:text-sm"
+                className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-linear-to-r from-primary to-accent text-white rounded-lg font-semibold hover:shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none transition-all text-xs md:text-sm"
               >
                 <span className="hidden sm:inline">Next</span>
-                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-4 h-4 md:w-5 md:h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
             </div>
