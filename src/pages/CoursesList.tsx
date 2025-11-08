@@ -82,7 +82,11 @@ export default function CoursesList() {
     setToast({ isVisible: true, type, message });
   };
 
-  const openDeleteModal = (id: string, name: string, event?: React.MouseEvent) => {
+  const openDeleteModal = (
+    id: string,
+    name: string,
+    event?: React.MouseEvent
+  ) => {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -112,7 +116,9 @@ export default function CoursesList() {
 
     try {
       await deleteCourse(deleteModal.courseId);
-      setCourses((c) => c?.filter((x) => x.id !== deleteModal.courseId) ?? null);
+      setCourses(
+        (c) => c?.filter((x) => x.id !== deleteModal.courseId) ?? null
+      );
       closeDeleteModal();
       showToast("success", "Course deleted successfully!");
     } catch (err: any) {
@@ -575,7 +581,9 @@ export default function CoursesList() {
                       Edit
                     </Link>
                     <button
-                      onClick={(e) => openDeleteModal(c.id, c.title || "Untitled Course", e)}
+                      onClick={(e) =>
+                        openDeleteModal(c.id, c.title || "Untitled Course", e)
+                      }
                       className="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
                       aria-label="Delete course"
                       type="button"
@@ -737,7 +745,8 @@ export default function CoursesList() {
                             />
                           </svg>
                           <p className="text-xs text-red-800">
-                            This action cannot be undone. All course content, lessons, and quizzes will be permanently deleted.
+                            This action cannot be undone. All course content,
+                            lessons, and quizzes will be permanently deleted.
                           </p>
                         </div>
                       </div>
@@ -823,7 +832,11 @@ export default function CoursesList() {
                 }`}
               >
                 {toast.type === "success" ? (
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -831,7 +844,11 @@ export default function CoursesList() {
                     />
                   </svg>
                 ) : (
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -857,14 +874,20 @@ export default function CoursesList() {
                 </p>
               </div>
               <button
-                onClick={() => setToast((prev) => ({ ...prev, isVisible: false }))}
+                onClick={() =>
+                  setToast((prev) => ({ ...prev, isVisible: false }))
+                }
                 className={`absolute top-2 right-2 p-1 rounded-full hover:bg-opacity-20 transition-colors ${
                   toast.type === "success"
                     ? "text-green-600 hover:bg-green-600"
                     : "text-red-600 hover:bg-red-600"
                 }`}
               >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     fillRule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
