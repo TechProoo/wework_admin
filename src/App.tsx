@@ -24,7 +24,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <NewCourseProvider>
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen w-full flex flex-col">
           <AdminNavbar />
 
           <div className="mt-10 flex-1">

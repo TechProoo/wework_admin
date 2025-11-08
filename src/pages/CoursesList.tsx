@@ -211,7 +211,7 @@ export default function CoursesList() {
 
           <button
             onClick={() => newCourse?.open()}
-            className="w-full md:w-auto bg-gradient-to-r from-primary to-accent text-white px-4 md:px-6 py-2.5 md:py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+            className="w-full md:w-auto bg-linear-to-r from-primary to-accent text-white px-4 md:px-6 py-2.5 md:py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path
@@ -297,7 +297,7 @@ export default function CoursesList() {
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
           <svg
-            className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"
+            className="w-5 h-5 text-red-600 shrink-0 mt-0.5"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -338,7 +338,7 @@ export default function CoursesList() {
         </div>
       ) : courses && total === 0 ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-12 flex flex-col items-center text-center">
-          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-6">
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-linear-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-6">
             <svg
               className="w-10 h-10 md:w-12 md:h-12 text-primary"
               fill="currentColor"
@@ -362,7 +362,7 @@ export default function CoursesList() {
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <button
                   onClick={() => navigate("/courses/new")}
-                  className="bg-gradient-to-r from-primary to-accent text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+                  className="bg-linear-to-r from-primary to-accent text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
                 >
                   Create Your First Course
                 </button>
@@ -399,7 +399,7 @@ export default function CoursesList() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-primary"
                         fill="currentColor"
@@ -422,7 +422,7 @@ export default function CoursesList() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-primary"
                         fill="currentColor"
@@ -441,7 +441,7 @@ export default function CoursesList() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-primary"
                         fill="currentColor"
@@ -480,7 +480,7 @@ export default function CoursesList() {
                 {/* Course Thumbnail */}
                 <div className="relative overflow-hidden">
                   <div
-                    className="w-full h-40 md:h-48 bg-gradient-to-br from-primary to-accent flex items-center justify-center text-4xl md:text-5xl font-bold text-white group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-40 md:h-48 bg-linear-to-br from-primary to-accent flex items-center justify-center text-4xl md:text-5xl font-bold text-white group-hover:scale-105 transition-transform duration-300"
                     style={
                       c.thumbnail || (c as any).thumbnailUrl
                         ? {
@@ -576,7 +576,7 @@ export default function CoursesList() {
                     </Link>
                     <Link
                       to={`/courses/${c.id}/edit`}
-                      className="flex-1 text-center px-3 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg hover:shadow-md transition-all font-medium text-sm"
+                      className="flex-1 text-center px-3 py-2 bg-linear-to-r from-primary to-accent text-white rounded-lg hover:shadow-md transition-all font-medium text-sm"
                     >
                       Edit
                     </Link>
@@ -704,7 +704,7 @@ export default function CoursesList() {
             <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full transform transition-all">
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-14 sm:w-14">
+                  <div className="mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-14 sm:w-14">
                     <svg
                       className="h-7 w-7 text-red-600"
                       fill="none"
@@ -734,7 +734,7 @@ export default function CoursesList() {
                       <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                         <div className="flex items-start gap-2">
                           <svg
-                            className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"
+                            className="w-5 h-5 text-red-600 shrink-0 mt-0.5"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -827,7 +827,7 @@ export default function CoursesList() {
           >
             <div className="flex items-start gap-3">
               <div
-                className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
                   toast.type === "success" ? "bg-green-500" : "bg-red-500"
                 }`}
               >
