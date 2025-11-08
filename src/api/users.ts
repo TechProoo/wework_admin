@@ -19,6 +19,7 @@ export const fetchUsers = async (): Promise<any[]> => {
     const res = await httpClient.get("/students");
     const body = res.data as any;
     // controller typically returns { statusCode, message, data }
+    console.log(body)
     return body?.data ?? [];
   } catch (error: unknown) {
     console.error("Failed to fetch users:", error);
