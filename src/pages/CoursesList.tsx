@@ -25,6 +25,30 @@ export default function CoursesList() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
+  // Delete modal state
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    courseId: string | null;
+    courseName: string | null;
+    isDeleting: boolean;
+  }>({
+    isOpen: false,
+    courseId: null,
+    courseName: null,
+    isDeleting: false,
+  });
+
+  // Success/Error toast state
+  const [toast, setToast] = useState<{
+    isVisible: boolean;
+    type: "success" | "error";
+    message: string;
+  }>({
+    isVisible: false,
+    type: "success",
+    message: "",
+  });
+
   useEffect(() => {
     (async () => {
       try {
@@ -44,24 +68,57 @@ export default function CoursesList() {
     return () => clearTimeout(t);
   }, [search]);
 
-  const onDelete = async (id: string, event?: React.MouseEvent) => {
-    // Prevent event propagation if called from within a clickable parent
+  // Auto-hide toast after 5 seconds
+  useEffect(() => {
+    if (toast.isVisible) {
+      const timer = setTimeout(() => {
+        setToast((prev) => ({ ...prev, isVisible: false }));
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast.isVisible]);
+
+  const showToast = (type: "success" | "error", message: string) => {
+    setToast({ isVisible: true, type, message });
+  };
+
+  const openDeleteModal = (id: string, name: string, event?: React.MouseEvent) => {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
-    
-    if (!confirm("Delete this course? This cannot be undone.")) return;
-    
+    setDeleteModal({
+      isOpen: true,
+      courseId: id,
+      courseName: name,
+      isDeleting: false,
+    });
+  };
+
+  const closeDeleteModal = () => {
+    if (deleteModal.isDeleting) return; // Prevent closing while deleting
+    setDeleteModal({
+      isOpen: false,
+      courseId: null,
+      courseName: null,
+      isDeleting: false,
+    });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteModal.courseId || deleteModal.isDeleting) return;
+
+    setDeleteModal((prev) => ({ ...prev, isDeleting: true }));
+
     try {
-      await deleteCourse(id);
-      setCourses((c) => c?.filter((x) => x.id !== id) ?? null);
-      
-      // Show success message
-      alert("Course deleted successfully!");
+      await deleteCourse(deleteModal.courseId);
+      setCourses((c) => c?.filter((x) => x.id !== deleteModal.courseId) ?? null);
+      closeDeleteModal();
+      showToast("success", "Course deleted successfully!");
     } catch (err: any) {
       console.error("Delete error:", err);
-      alert(err.message || String(err) || "Failed to delete course");
+      showToast("error", err.message || "Failed to delete course");
+      setDeleteModal((prev) => ({ ...prev, isDeleting: false }));
     }
   };
 
@@ -518,7 +575,7 @@ export default function CoursesList() {
                       Edit
                     </Link>
                     <button
-                      onClick={(e) => onDelete(c.id, e)}
+                      onClick={(e) => openDeleteModal(c.id, c.title || "Untitled Course", e)}
                       className="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
                       aria-label="Delete course"
                       type="button"
@@ -619,6 +676,202 @@ export default function CoursesList() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.isOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          {/* Background overlay */}
+          <div
+            className="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"
+            onClick={closeDeleteModal}
+          />
+
+          {/* Modal container - centering wrapper */}
+          <div className="flex min-h-screen items-center justify-center p-4">
+            {/* Modal panel */}
+            <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full transform transition-all">
+              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="sm:flex sm:items-start">
+                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-14 sm:w-14">
+                    <svg
+                      className="h-7 w-7 text-red-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      Delete Course
+                    </h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-600 mb-3">
+                        Are you sure you want to delete{" "}
+                        <span className="font-semibold text-gray-900">
+                          "{deleteModal.courseName}"
+                        </span>
+                        ?
+                      </p>
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                        <div className="flex items-start gap-2">
+                          <svg
+                            className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <p className="text-xs text-red-800">
+                            This action cannot be undone. All course content, lessons, and quizzes will be permanently deleted.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-3">
+                <button
+                  type="button"
+                  disabled={deleteModal.isDeleting}
+                  onClick={confirmDelete}
+                  className="w-full inline-flex justify-center items-center rounded-lg border border-transparent shadow-sm px-4 py-2.5 bg-red-600 text-base font-semibold text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  {deleteModal.isDeleting ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-2"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Delete Course
+                    </>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  disabled={deleteModal.isDeleting}
+                  onClick={closeDeleteModal}
+                  className="mt-3 w-full inline-flex justify-center rounded-lg border-2 border-gray-300 shadow-sm px-4 py-2.5 bg-white text-base font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toast.isVisible && (
+        <div className="fixed bottom-4 right-4 z-50 animate-slide-up">
+          <div
+            className={`rounded-xl shadow-2xl p-4 pr-12 max-w-md ${
+              toast.type === "success"
+                ? "bg-green-50 border-2 border-green-500"
+                : "bg-red-50 border-2 border-red-500"
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <div
+                className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                  toast.type === "success" ? "bg-green-500" : "bg-red-500"
+                }`}
+              >
+                {toast.type === "success" ? (
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                )}
+              </div>
+              <div className="flex-1">
+                <h4
+                  className={`font-semibold text-sm ${
+                    toast.type === "success" ? "text-green-900" : "text-red-900"
+                  }`}
+                >
+                  {toast.type === "success" ? "Success" : "Error"}
+                </h4>
+                <p
+                  className={`text-sm mt-1 ${
+                    toast.type === "success" ? "text-green-700" : "text-red-700"
+                  }`}
+                >
+                  {toast.message}
+                </p>
+              </div>
+              <button
+                onClick={() => setToast((prev) => ({ ...prev, isVisible: false }))}
+                className={`absolute top-2 right-2 p-1 rounded-full hover:bg-opacity-20 transition-colors ${
+                  toast.type === "success"
+                    ? "text-green-600 hover:bg-green-600"
+                    : "text-red-600 hover:bg-red-600"
+                }`}
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
